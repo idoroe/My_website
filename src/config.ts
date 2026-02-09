@@ -1,16 +1,16 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
-// TODO: Replace with your actual information
-export const SITE_TITLE = 'Your Name | Software Engineer';
-export const SITE_DESCRIPTION = 'Portfolio of a 4th-year Software Engineering student passionate about building impactful software. Explore my projects, experience, and blog.';
+export const SITE_TITLE = 'Emmanuel Idoro | Software Engineer';
+export const SITE_DESCRIPTION = 'Portfolio of Emmanuel Idoro — Software Engineering student at the University of Calgary building full-stack applications, AI training systems, and performance-optimized web experiences.';
 export const GENERATE_SLUG_FROM_TITLE = true;
 export const TRANSITION_API = true;
 
-// TODO: Replace with your actual name
-export const PERSON_NAME = 'Your Name';
+export const PERSON_NAME = 'Emmanuel Idoro';
 export const PERSON_TITLE = 'Software Engineering Student';
-export const PERSON_TAGLINE = 'Building impactful software, one commit at a time.';
+export const PERSON_TAGLINE = 'Building performant software and training the next generation of AI models.';
+export const PERSON_PHONE = '(825) 365-9571';
+export const PERSON_LOCATION = 'Calgary, Canada';
 
 // Navigation items
 export const NAV_ITEMS = [
@@ -22,10 +22,9 @@ export const NAV_ITEMS = [
   { label: 'Contact', href: '/contact' },
 ];
 
-// TODO: Replace with your actual social links
 export const SOCIAL_LINKS = {
-  github: 'https://github.com/yourusername',
-  linkedin: 'https://linkedin.com/in/yourusername',
-  email: 'your.email@example.com',
+  github: 'https://github.com/idoroe',
+  linkedin: 'https://linkedin.com/in/emmanuelidoro',
+  email: 'emmanuelidoro@gmail.com',
   twitter: '',
 };
