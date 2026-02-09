@@ -24,7 +24,7 @@ export const NAV_ITEMS = [
 
 export const SOCIAL_LINKS = {
   github: 'https://github.com/idoroe',
-  linkedin: 'https://linkedin.com/in/emmanuelidoro',
+  linkedin: 'https://www.linkedin.com/in/emmanuel-idoro-2642b924b/',
   email: 'emmanuelidoro@gmail.com',
   twitter: '',
 };
