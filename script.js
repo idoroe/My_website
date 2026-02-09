@@ -105,9 +105,6 @@ if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
-        // Get form data
-        const formData = new FormData(contactForm);
-        
         // Here you would typically send the data to a server
         // For now, we'll just show an alert
         alert('Thank you for your message! I will get back to you soon.');
