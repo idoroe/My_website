@@ -40,13 +40,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar background on scroll
+// Navbar background on scroll and active navigation links
 const navbar = document.querySelector('.navbar');
-let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
     
+    // Update navbar background
     if (currentScroll > 100) {
         navbar.style.background = 'rgba(255, 255, 255, 0.95)';
         navbar.style.backdropFilter = 'blur(10px)';
@@ -55,7 +55,25 @@ window.addEventListener('scroll', () => {
         navbar.style.backdropFilter = 'none';
     }
     
-    lastScroll = currentScroll;
+    // Update active navigation links based on scroll position
+    const sections = document.querySelectorAll('section[id]');
+    const scrollPosition = currentScroll + 100;
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        const navLink = document.querySelector(`.nav-links a[href="#${sectionId}"]`);
+
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.style.color = 'var(--text-dark)';
+            });
+            if (navLink) {
+                navLink.style.color = 'var(--primary-color)';
+            }
+        }
+    });
 });
 
 // Intersection Observer for fade-in animations
@@ -98,28 +116,6 @@ if (contactForm) {
         contactForm.reset();
     });
 }
-
-// Add active state to navigation links based on scroll position
-window.addEventListener('scroll', () => {
-    const sections = document.querySelectorAll('section[id]');
-    const scrollPosition = window.scrollY + 100;
-
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
-        const navLink = document.querySelector(`.nav-links a[href="#${sectionId}"]`);
-
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.style.color = 'var(--text-dark)';
-            });
-            if (navLink) {
-                navLink.style.color = 'var(--primary-color)';
-            }
-        }
-    });
-});
 
 // Simple fade-in effect for hero section instead of typing
 const heroTitle = document.querySelector('.hero h1');
