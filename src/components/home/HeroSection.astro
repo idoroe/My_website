@@ -2,26 +2,30 @@
 import { PERSON_NAME, PERSON_TITLE, PERSON_TAGLINE } from "../../config";
 ---
 
-<section class="py-12 md:py-20">
-  <div class="max-w-3xl">
-    <p class="text-primary font-medium mb-2 animate-fade-in">Hello, I'm</p>
-    <h1 class="text-4xl md:text-6xl font-bold mb-4 animate-fade-in-up">
-      {PERSON_NAME}
+<section class="py-16 md:py-24 relative">
+  <!-- Subtle gradient orb background -->
+  <div class="absolute -top-20 -left-20 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none"></div>
+  <div class="absolute -bottom-20 -right-20 w-72 h-72 bg-secondary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style="animation-delay: 1.5s;"></div>
+
+  <div class="max-w-3xl relative">
+    <p class="text-primary font-semibold mb-3 animate-fade-in tracking-wide text-sm uppercase">Hello, I'm</p>
+    <h1 class="text-5xl md:text-7xl font-bold mb-4 animate-fade-in-up">
+      <span class="gradient-text">{PERSON_NAME}</span>
     </h1>
-    <p class="text-xl md:text-2xl text-base-content/70 font-medium mb-2 animate-fade-in-up" style="animation-delay: 0.1s;">
+    <p class="text-xl md:text-2xl text-base-content/70 font-medium mb-3 animate-fade-in-up" style="animation-delay: 0.1s;">
       {PERSON_TITLE}
     </p>
-    <p class="text-lg text-base-content/60 mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+    <p class="text-lg text-base-content/50 mb-10 max-w-xl animate-fade-in-up" style="animation-delay: 0.2s;">
       {PERSON_TAGLINE}
     </p>
-    <div class="flex flex-wrap gap-3 animate-fade-in-up" style="animation-delay: 0.3s;">
-      <a href="/projects" class="btn btn-primary">
+    <div class="flex flex-wrap gap-4 animate-fade-in-up" style="animation-delay: 0.3s;">
+      <a href="/projects" class="btn btn-gradient btn-lg">
         View Projects
       </a>
-      <a href="/resume" class="btn btn-outline btn-primary">
+      <a href="/resume" class="btn btn-outline btn-primary btn-lg">
         Resume
       </a>
-      <a href="/contact" class="btn btn-ghost">
+      <a href="/contact" class="btn btn-ghost btn-lg">
         Contact Me
       </a>
     </div>

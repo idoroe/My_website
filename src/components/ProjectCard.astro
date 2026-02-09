@@ -15,7 +15,7 @@ const { title, description, heroImage, tags, category, slug } = Astro.props;
 
 <a
   href={`/projects/${createSlug(title, slug)}`}
-  class="card bg-base-200 card-hover overflow-hidden group"
+  class="card bg-base-200 glow-card gradient-border overflow-hidden group"
   data-category={category}
 >
   {heroImage && (

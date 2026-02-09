@@ -27,9 +27,9 @@ const highlights = [
   <h2 class="text-2xl font-bold mb-6">Highlights</h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
     {highlights.map((item) => (
-      <div class="card bg-base-200 card-hover p-5">
+      <div class="card bg-base-200 glow-card gradient-border p-5">
         <div class="flex items-start gap-3">
-          <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+          <div class="w-10 h-10 rounded-lg gradient-icon-bg flex items-center justify-center flex-shrink-0">
             {item.icon === "briefcase" && (
               <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
             )}

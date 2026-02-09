@@ -24,7 +24,7 @@ const featured = projects
       {featured.map((project) => (
         <a
           href={`/projects/${createSlug(project.data.title, project.slug)}`}
-          class="card bg-base-200 card-hover overflow-hidden group"
+          class="card bg-base-200 glow-card gradient-border overflow-hidden group"
         >
           {project.data.heroImage && (
             <figure class="h-44 overflow-hidden">

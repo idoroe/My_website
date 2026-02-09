@@ -20,7 +20,69 @@ html {
   transform: translateY(0);
 }
 
-/* Card hover effects */
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 50%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="dark"] .gradient-text {
+  background: linear-gradient(135deg, #a78bfa 0%, #22d3ee 50%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient border card */
+.gradient-border {
+  position: relative;
+  background: oklch(var(--b2));
+  border-radius: 1rem;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  padding: 1px;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4, #10b981);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gradient-border:hover::before {
+  opacity: 1;
+}
+
+[data-theme="dark"] .gradient-border::before {
+  background: linear-gradient(135deg, #a78bfa, #22d3ee, #34d399);
+}
+
+/* Glow card effect */
+.glow-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glow-card:hover {
+  transform: translateY(-4px);
+}
+
+[data-theme="light"] .glow-card:hover {
+  box-shadow: 0 8px 30px -8px rgba(124, 58, 237, 0.2);
+}
+
+[data-theme="dark"] .glow-card:hover {
+  box-shadow: 0 8px 30px -8px rgba(167, 139, 250, 0.15),
+              0 4px 15px -4px rgba(34, 211, 238, 0.1);
+}
+
+/* Card hover effects (legacy) */
 .card-hover {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -30,24 +92,78 @@ html {
   box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
 }
 
+[data-theme="dark"] .card-hover:hover {
+  box-shadow: 0 12px 24px -8px rgba(167, 139, 250, 0.1);
+}
+
+/* Gradient button */
+.btn-gradient {
+  background: linear-gradient(135deg, #7c3aed, #0891b2);
+  border: none;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #6d28d9, #0e7490);
+  box-shadow: 0 4px 20px -4px rgba(124, 58, 237, 0.4);
+}
+
+[data-theme="dark"] .btn-gradient {
+  background: linear-gradient(135deg, #a78bfa, #22d3ee);
+  color: #09090b;
+}
+
+[data-theme="dark"] .btn-gradient:hover {
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  box-shadow: 0 4px 20px -4px rgba(167, 139, 250, 0.3);
+}
+
+/* Gradient icon background */
+.gradient-icon-bg {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.1));
+}
+
+[data-theme="dark"] .gradient-icon-bg {
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(34, 211, 238, 0.1));
+}
+
+/* Subtle dot background pattern */
+.dot-pattern {
+  background-image: radial-gradient(circle, oklch(var(--bc) / 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 /* Prose overrides for dark mode */
 [data-theme="dark"] .prose {
-  --tw-prose-body: #cbd5e1;
-  --tw-prose-headings: #e2e8f0;
-  --tw-prose-links: #818cf8;
-  --tw-prose-bold: #e2e8f0;
-  --tw-prose-code: #e2e8f0;
-  --tw-prose-quotes: #94a3b8;
-  --tw-prose-quote-borders: #334155;
-  --tw-prose-counters: #94a3b8;
-  --tw-prose-bullets: #94a3b8;
-  --tw-prose-hr: #334155;
-  --tw-prose-th-borders: #334155;
-  --tw-prose-td-borders: #1e293b;
+  --tw-prose-body: #a1a1aa;
+  --tw-prose-headings: #e4e4e7;
+  --tw-prose-links: #a78bfa;
+  --tw-prose-bold: #e4e4e7;
+  --tw-prose-code: #e4e4e7;
+  --tw-prose-quotes: #a1a1aa;
+  --tw-prose-quote-borders: #27272a;
+  --tw-prose-counters: #71717a;
+  --tw-prose-bullets: #71717a;
+  --tw-prose-hr: #27272a;
+  --tw-prose-th-borders: #27272a;
+  --tw-prose-td-borders: #18181b;
 }
 
 /* Navbar backdrop */
 .navbar-blur {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+/* Gradient divider */
+.gradient-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #7c3aed, #06b6d4, transparent);
+  opacity: 0.3;
+}
+
+[data-theme="dark"] .gradient-divider {
+  background: linear-gradient(90deg, transparent, #a78bfa, #22d3ee, transparent);
+  opacity: 0.2;
 }

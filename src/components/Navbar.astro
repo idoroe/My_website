@@ -9,11 +9,12 @@ const { activeItemID } = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
 
-<nav class="navbar-blur sticky top-0 z-50 border-b border-base-300/50 bg-base-100/80">
+<nav class="navbar-blur sticky top-0 z-50 bg-base-100/80">
+  <div class="gradient-divider absolute bottom-0 left-0 right-0"></div>
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo / Brand -->
-      <a href="/" class="text-xl font-bold text-primary hover:opacity-80 transition-opacity">
+      <a href="/" class="text-xl font-bold gradient-text hover:opacity-80 transition-opacity">
         EI
       </a>
 
