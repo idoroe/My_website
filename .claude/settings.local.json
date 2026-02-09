@@ -24,7 +24,17 @@
       "Bash(python3:*)",
       "Bash(pnpm build:*)",
       "Bash(pnpm list:*)",
-      "Bash(pnpm astro sync:*)"
+      "Bash(pnpm astro sync:*)",
+      "Bash(git -C /Users/user/Desktop/Personal_project/my_website/My_website remote:*)",
+      "Bash(git -C /Users/user/Desktop/Personal_project/my_website/My_website status -u)",
+      "Bash(git -C /Users/user/Desktop/Personal_project/my_website/My_website log --oneline -5)",
+      "Bash(git -C /Users/user/Desktop/Personal_project/my_website/My_website diff --stat)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nPersonalize site with Emmanuel Idoro''s info\n\nUpdate config, navbar, contact form \\(FormSubmit.co → emmanuelidoro@gmail.com\\),\nexperience timeline, skills, about section, proof cards, tech strip, resume PDF,\nand JSON-LD structured data with real information from resume.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git -C /Users/user/Desktop/Personal_project/my_website/My_website add wrangler.toml)",
+      "Bash(git -C /Users/user/Desktop/Personal_project/my_website/My_website commit -m \"$\\(cat <<''EOF''\nAdd wrangler.toml for Cloudflare Pages deploy\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C /Users/user/Desktop/Personal_project/my_website/My_website push origin main)"
     ]
   }
 }
