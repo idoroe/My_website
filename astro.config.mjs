@@ -5,8 +5,7 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: Replace with your actual site URL
-  site: 'https://yoursite.com',
+  site: 'https://emmanuelidoro.netlify.app',
   integrations: [mdx(), sitemap(), tailwind()],
   markdown: {
     shikiConfig: {
