@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TimeLine from "../components/cv/TimeLine.astro";
+import SkillGroup from "../components/SkillGroup.astro";
+---
+
+<BaseLayout title="Experience" activeItemID="experience">
+  <div class="py-4">
+    <h1 class="text-3xl font-bold mb-8">Experience</h1>
+
+    <!-- Work Experience -->
+    <section class="mb-12 animate-on-scroll">
+      <h2 class="text-xl font-bold mb-4">Work Experience</h2>
+      <div class="time-line-container">
+        <!-- TODO: Replace with your actual experience -->
+        <TimeLine
+          title="Software Engineering Intern"
+          subtitle="TODO: Company Name | May 2025 – Aug 2025"
+        >
+          <ul class="list-disc list-inside space-y-1 text-base-content/70">
+            <li>TODO: Built a microservice that processed X requests/day, reducing latency by Y%</li>
+            <li>TODO: Collaborated with a team of Z engineers on feature development</li>
+            <li>TODO: Implemented automated testing, increasing code coverage from A% to B%</li>
+          </ul>
+        </TimeLine>
+        <TimeLine
+          title="Teaching Assistant"
+          subtitle="TODO: University Name | Sep 2024 – Apr 2025"
+        >
+          <ul class="list-disc list-inside space-y-1 text-base-content/70">
+            <li>TODO: Mentored 30+ students in Data Structures & Algorithms</li>
+            <li>TODO: Held weekly office hours and graded assignments</li>
+          </ul>
+        </TimeLine>
+        <TimeLine
+          title="Freelance Developer"
+          subtitle="TODO: Self-Employed | Jan 2024 – Apr 2024"
+        >
+          <ul class="list-disc list-inside space-y-1 text-base-content/70">
+            <li>TODO: Developed web applications for small business clients</li>
+            <li>TODO: Managed full project lifecycle from requirements to deployment</li>
+          </ul>
+        </TimeLine>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="mb-12 animate-on-scroll">
+      <h2 class="text-xl font-bold mb-4">Education</h2>
+      <div class="time-line-container">
+        <!-- TODO: Replace with your actual education -->
+        <TimeLine
+          title="B.Eng. Software Engineering"
+          subtitle="TODO: University Name | Sep 2022 – Apr 2026 (Expected)"
+        >
+          <ul class="list-disc list-inside space-y-1 text-base-content/70">
+            <li>TODO: GPA: X.X / 4.0</li>
+            <li>TODO: Relevant Coursework: Data Structures, Algorithms, Databases, ML, Software Architecture</li>
+            <li>TODO: Dean's List, Honors, Scholarships, etc.</li>
+          </ul>
+        </TimeLine>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="animate-on-scroll">
+      <h2 class="text-xl font-bold mb-4">Skills</h2>
+      <!-- TODO: Customize your skills -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <SkillGroup
+          title="Languages"
+          skills={["Python", "TypeScript", "Java", "C++", "SQL", "Go"]}
+        />
+        <SkillGroup
+          title="Frameworks"
+          skills={["React", "Next.js", "Node.js", "Express", "Spring Boot", "FastAPI"]}
+        />
+        <SkillGroup
+          title="Data & ML"
+          skills={["TensorFlow", "PyTorch", "Pandas", "NumPy", "Scikit-learn"]}
+        />
+        <SkillGroup
+          title="Databases"
+          skills={["PostgreSQL", "MongoDB", "Redis", "MySQL"]}
+        />
+        <SkillGroup
+          title="DevOps & Cloud"
+          skills={["Docker", "Kubernetes", "AWS", "GCP", "GitHub Actions", "Terraform"]}
+        />
+        <SkillGroup
+          title="Tooling"
+          skills={["Git", "Linux", "Figma", "Postman", "VS Code", "Jira"]}
+        />
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import ProjectFilter from "../components/ProjectFilter.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.sortOrder - b.data.sortOrder
+);
+
+const categories = [...new Set(projects.map((p) => p.data.category))];
+---
+
+<BaseLayout title="Projects" activeItemID="projects">
+  <div class="py-4">
+    <h1 class="text-3xl font-bold mb-2">Projects</h1>
+    <p class="text-base-content/60 mb-6">
+      A collection of things I've built. Click any project for the full case study.
+    </p>
+
+    <ProjectFilter categories={categories} />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {projects.map((project) => (
+        <ProjectCard
+          title={project.data.title}
+          description={project.data.description}
+          heroImage={project.data.heroImage}
+          tags={project.data.tags}
+          category={project.data.category}
+          slug={project.slug}
+        />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,53 @@
+/* Timeline styles */
+.time-line-container>div:last-child .education__time>.education__line {
+  display: none;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll animation base */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+}
+
+/* Prose overrides for dark mode */
+[data-theme="dark"] .prose {
+  --tw-prose-body: #cbd5e1;
+  --tw-prose-headings: #e2e8f0;
+  --tw-prose-links: #818cf8;
+  --tw-prose-bold: #e2e8f0;
+  --tw-prose-code: #e2e8f0;
+  --tw-prose-quotes: #94a3b8;
+  --tw-prose-quote-borders: #334155;
+  --tw-prose-counters: #94a3b8;
+  --tw-prose-bullets: #94a3b8;
+  --tw-prose-hr: #334155;
+  --tw-prose-th-borders: #334155;
+  --tw-prose-td-borders: #1e293b;
+}
+
+/* Navbar backdrop */
+.navbar-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: Replace with your actual site URL
+Sitemap: https://yoursite.com/sitemap-index.xml

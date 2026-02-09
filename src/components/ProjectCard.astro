@@ -1,0 +1,41 @@
+---
+import createSlug from "../lib/createSlug";
+
+interface Props {
+  title: string;
+  description: string;
+  heroImage?: string;
+  tags: string[];
+  category: string;
+  slug: string;
+}
+
+const { title, description, heroImage, tags, category, slug } = Astro.props;
+---
+
+<a
+  href={`/projects/${createSlug(title, slug)}`}
+  class="card bg-base-200 card-hover overflow-hidden group"
+  data-category={category}
+>
+  {heroImage && (
+    <figure class="h-48 overflow-hidden">
+      <img
+        src={heroImage}
+        alt={title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        loading="lazy"
+      />
+    </figure>
+  )}
+  <div class="p-5">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="badge badge-sm badge-primary">{category}</span>
+      {tags.slice(0, 2).map((tag) => (
+        <span class="badge badge-sm badge-outline">{tag}</span>
+      ))}
+    </div>
+    <h3 class="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">{title}</h3>
+    <p class="text-sm text-base-content/60 line-clamp-2">{description}</p>
+  </div>
+</a>

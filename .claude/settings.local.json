@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(brew:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:astro.build)",
+      "Bash(git -C /Users/user/Desktop/Personal_project/my_website/My_website log --oneline --all)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:daisyui.com)",
+      "Bash(node:*)",
+      "Bash(pnpm --version:*)",
+      "Bash(corepack enable:*)",
+      "Bash(corepack prepare:*)",
+      "Bash(npm install:*)",
+      "Bash(rsync:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm approve-builds:*)",
+      "Bash(npx -y pnpm config set onlyBuiltDependencies '[\"\"esbuild\"\",\"\"sharp\"\"]' --location project)",
+      "Bash(python3 -c \" import sys, json pkg = json.load\\(sys.stdin\\) pkg.setdefault\\(''pnpm'', {}\\)[''onlyBuiltDependencies''] = [''esbuild'', ''sharp''] json.dump\\(pkg, sys.stdout, indent=2\\) \")",
+      "Bash(timeout 15 pnpm dev:*)",
+      "Bash(pnpm add:*)",
+      "Bash(python3:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm list:*)",
+      "Bash(pnpm astro sync:*)"
+    ]
+  }
+}

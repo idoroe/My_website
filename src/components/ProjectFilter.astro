@@ -1,0 +1,58 @@
+---
+interface Props {
+  categories: string[];
+}
+
+const { categories } = Astro.props;
+---
+
+<div class="flex flex-wrap gap-2 mb-8">
+  <button
+    class="filter-btn btn btn-sm btn-primary"
+    data-filter="all"
+  >
+    All
+  </button>
+  {categories.map((cat) => (
+    <button
+      class="filter-btn btn btn-sm btn-ghost"
+      data-filter={cat}
+    >
+      {cat}
+    </button>
+  ))}
+</div>
+
+<script>
+  function initProjectFilter() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('[data-category]');
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+
+        // Update active button styles
+        filterBtns.forEach((b) => {
+          b.classList.remove('btn-primary');
+          b.classList.add('btn-ghost');
+        });
+        btn.classList.remove('btn-ghost');
+        btn.classList.add('btn-primary');
+
+        // Filter cards
+        projectCards.forEach((card) => {
+          const el = card as HTMLElement;
+          if (filter === 'all' || el.dataset.category === filter) {
+            el.style.display = '';
+          } else {
+            el.style.display = 'none';
+          }
+        });
+      });
+    });
+  }
+
+  initProjectFilter();
+  document.addEventListener('astro:after-swap', initProjectFilter);
+</script>

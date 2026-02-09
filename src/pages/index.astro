@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroSection from "../components/home/HeroSection.astro";
+import ProofCards from "../components/home/ProofCards.astro";
+import FeaturedProjects from "../components/home/FeaturedProjects.astro";
+import AboutSection from "../components/home/AboutSection.astro";
+import TechStrip from "../components/home/TechStrip.astro";
+---
+
+<BaseLayout activeItemID="home">
+  <HeroSection />
+  <ProofCards />
+  <FeaturedProjects />
+  <AboutSection />
+  <TechStrip />
+</BaseLayout>

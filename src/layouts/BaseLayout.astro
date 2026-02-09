@@ -1,0 +1,49 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import ScrollAnimations from "../components/ScrollAnimations.astro";
+import { ViewTransitions } from "astro:transitions";
+import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
+
+const {
+  image,
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  activeItemID,
+  ogType,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <BaseHead title={title} description={description} image={image} ogType={ogType} />
+    {TRANSITION_API && <ViewTransitions />}
+    <!-- Prevent flash of wrong theme (FOWT) -->
+    <script is:inline>
+      (function() {
+        const saved = localStorage.getItem('theme');
+        const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', saved || preferred);
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col bg-base-100 text-base-content">
+    <Navbar activeItemID={activeItemID} />
+    <main class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <slot />
+    </main>
+    <Footer />
+    <ScrollAnimations />
+  </body>
+</html>
+
+<script>
+  // Re-apply theme after View Transitions swap
+  document.addEventListener('astro:after-swap', () => {
+    const saved = localStorage.getItem('theme');
+    const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', saved || preferred);
+  });
+</script>
