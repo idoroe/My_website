@@ -2,8 +2,8 @@
 const highlights = [
   {
     icon: "briefcase",
-    title: "Dev Intern",
-    description: "Software Developer Intern at Learn Easy Academy — cut page load from 3.2s to 1.8s",
+    title: "RBC Borealis",
+    description: "Incoming Data Engineering Intern on the Enterprise Data Hub team (May 2026)",
   },
   {
     icon: "code",
@@ -13,12 +13,12 @@ const highlights = [
   {
     icon: "users",
     title: "Schulich Engineering",
-    description: "B.Sc. Software Engineering at University of Calgary (2022 – 2027)",
+    description: "B.Sc. Software Engineering at University of Calgary — 4th year",
   },
   {
     icon: "trophy",
-    title: "Full-Stack Builder",
-    description: "Python, Java, C++, React, Django, Flask, AWS, Docker — shipped end-to-end apps",
+    title: "3 End-to-End Systems",
+    description: "Data pipelines, ML models, annotation platforms, and production infrastructure — all shipped",
   },
 ];
 ---
@@ -26,15 +26,18 @@ const highlights = [
 <section class="py-12 animate-on-scroll">
   <h2 class="text-2xl font-bold mb-6">Highlights</h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-    {highlights.map((item) => (
-      <div class="card bg-base-200 glow-card gradient-border p-5">
+    {highlights.map((item, i) => (
+      <div
+        class="card bg-base-200 glow-card gradient-border p-5 animate-scale-in"
+        style={`animation-delay: ${i * 0.1}s;`}
+      >
         <div class="flex items-start gap-3">
           <div class="w-10 h-10 rounded-lg gradient-icon-bg flex items-center justify-center flex-shrink-0">
             {item.icon === "briefcase" && (
               <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
             )}
             {item.icon === "trophy" && (
-              <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3h14M9 3v2a4 4 0 004 0V3M12 11v4m-4 4h8m-4-4v4M7 7a5 5 0 005 5 5 5 0 005-5" /></svg>
+              <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             )}
             {item.icon === "users" && (
               <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>

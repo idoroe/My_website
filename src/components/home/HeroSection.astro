@@ -2,10 +2,11 @@
 import { PERSON_NAME, PERSON_TITLE, PERSON_TAGLINE } from "../../config";
 ---
 
-<section class="py-16 md:py-24 relative">
-  <!-- Subtle gradient orb background -->
-  <div class="absolute -top-20 -left-20 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none"></div>
-  <div class="absolute -bottom-20 -right-20 w-72 h-72 bg-secondary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style="animation-delay: 1.5s;"></div>
+<section class="py-16 md:py-28 relative gradient-bg-animated">
+  <!-- Animated gradient orbs -->
+  <div class="absolute -top-20 -left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none"></div>
+  <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-secondary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style="animation-delay: 1.5s;"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-accent/3 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style="animation-delay: 3s;"></div>
 
   <div class="max-w-3xl relative">
     <p class="text-primary font-semibold mb-3 animate-fade-in tracking-wide text-sm uppercase">Hello, I'm</p>
@@ -15,9 +16,21 @@ import { PERSON_NAME, PERSON_TITLE, PERSON_TAGLINE } from "../../config";
     <p class="text-xl md:text-2xl text-base-content/70 font-medium mb-3 animate-fade-in-up" style="animation-delay: 0.1s;">
       {PERSON_TITLE}
     </p>
-    <p class="text-lg text-base-content/50 mb-10 max-w-xl animate-fade-in-up" style="animation-delay: 0.2s;">
+    <p class="text-lg text-base-content/50 mb-6 max-w-xl animate-fade-in-up" style="animation-delay: 0.2s;">
       {PERSON_TAGLINE}
     </p>
+
+    <!-- Status badges -->
+    <div class="flex flex-wrap gap-3 mb-10 animate-fade-in-up" style="animation-delay: 0.25s;">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-base-200 text-sm font-medium border border-base-300">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-status-pulse"></span>
+        Incoming: Data Engineering Intern @ RBC Borealis (May 2026)
+      </span>
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-base-200 text-sm font-medium border border-base-300">
+        Previously: AI Model Trainer @ Mindrift AI
+      </span>
+    </div>
+
     <div class="flex flex-wrap gap-4 animate-fade-in-up" style="animation-delay: 0.3s;">
       <a href="/projects" class="btn btn-gradient btn-lg">
         View Projects

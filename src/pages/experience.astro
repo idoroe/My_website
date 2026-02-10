@@ -13,6 +13,17 @@ import SkillGroup from "../components/SkillGroup.astro";
       <h2 class="text-xl font-bold mb-4">Work Experience</h2>
       <div class="time-line-container">
         <TimeLine
+          title="Data Engineering / ML Software Engineer Intern"
+          subtitle="RBC Borealis — Enterprise Data Hub Team | Starting May 2026"
+        >
+          <ul class="list-disc list-inside space-y-1 text-base-content/70">
+            <li>Joining the Enterprise Data Hub team to build and maintain enterprise data pipelines, working with production-scale data transformation, pipeline orchestration, and ML infrastructure in a banking environment</li>
+          </ul>
+          <p class="mt-3 text-sm text-primary/80 italic">
+            Related project: <a href="/projects/finsight" class="underline hover:text-primary">FinSight</a> — built before this internship to develop a deep understanding of dimensional modeling, dbt transformations, and anomaly detection in financial data.
+          </p>
+        </TimeLine>
+        <TimeLine
           title="AI Model Trainer"
           subtitle="Mindrift AI | Mar 2025 – Present | Remote"
         >
@@ -21,6 +32,9 @@ import SkillGroup from "../components/SkillGroup.astro";
             <li>Edit model answers into correct, runnable Java with brief explanations and unit tests, improving eval accuracy on similar tasks</li>
             <li>Review 10–20 contributor tasks per week for guideline compliance (score 1–5), reducing resubmits by ~25–35% with targeted feedback</li>
           </ul>
+          <p class="mt-3 text-sm text-primary/80 italic">
+            Related project: <a href="/projects/labelforge" class="underline hover:text-primary">LabelForge</a> — built an annotation and review platform inspired by the workflows and pain points I experienced in this role.
+          </p>
         </TimeLine>
         <TimeLine
           title="AI Model Trainer"
@@ -54,6 +68,7 @@ import SkillGroup from "../components/SkillGroup.astro";
           subtitle="University of Calgary, Schulich School of Engineering | Sep 2022 – Aug 2027"
         >
           <ul class="list-disc list-inside space-y-1 text-base-content/70">
+            <li>4th year — Expected graduation 2027</li>
             <li>Relevant Coursework: Data Structures & Algorithms, Object-Oriented Programming (Java), Software Design (C++), Databases, Operating Systems, Probability & Statistics</li>
           </ul>
         </TimeLine>
@@ -66,15 +81,27 @@ import SkillGroup from "../components/SkillGroup.astro";
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <SkillGroup
           title="Languages"
-          skills={["Python", "Java", "SQL", "C", "C++", "JavaScript", "CSS", "C#", "HTML"]}
+          skills={["Python", "Java", "C++", "C", "JavaScript", "TypeScript", "SQL", "C#", "HTML", "CSS"]}
         />
         <SkillGroup
-          title="Frameworks"
-          skills={["React", "Django", "Flask", "REST APIs"]}
+          title="Data Engineering"
+          skills={["dbt", "DuckDB", "Snowflake", "ETL Pipelines", "Star Schema Design"]}
         />
         <SkillGroup
-          title="Tools & Cloud"
-          skills={["AWS", "Docker", "Figma", "GitHub", "Postman", "Microsoft Excel", "Microsoft Teams"]}
+          title="Machine Learning"
+          skills={["scikit-learn", "Feature Engineering", "Model Serving", "Isolation Forest"]}
+        />
+        <SkillGroup
+          title="Full-Stack"
+          skills={["React", "Django", "FastAPI", "Flask", "PostgreSQL", "REST APIs", "Node.js"]}
+        />
+        <SkillGroup
+          title="DevOps & Cloud"
+          skills={["Docker", "GitHub Actions", "Prometheus", "Grafana", "Trivy", "AWS"]}
+        />
+        <SkillGroup
+          title="Tools"
+          skills={["GitHub", "Postman", "Figma", "Microsoft Excel", "Microsoft Teams"]}
         />
       </div>
     </section>

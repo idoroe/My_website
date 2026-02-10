@@ -1,0 +1,63 @@
+---
+title: "LabelForge"
+description: "A multi-user annotation platform with role-based workflows, task queues, review pipelines, and quality metrics — built from real experience as an AI model trainer at Mindrift."
+heroImage: "/post_img.webp"
+tags: ["React", "TypeScript", "Django", "PostgreSQL", "JWT Auth"]
+category: "Full-Stack"
+featured: true
+sortOrder: 2
+problem: "I spent months as an AI model trainer at Mindrift AI, evaluating LLM outputs and reviewing annotations. The workflow was always the same: claim a task, annotate it, submit for review, get feedback, iterate. But the tools we used were clunky — no quality metrics, no clear rejection feedback, no way to see how the team was performing."
+role: "Full-Stack Developer"
+techStack: ["React", "TypeScript", "Django REST Framework", "PostgreSQL", "JWT Authentication"]
+architecture: "React frontend communicates with a Django REST API backed by PostgreSQL. JWT handles authentication across three user roles. A task state machine enforces valid workflow transitions: unclaimed → in_progress → submitted → approved/rejected."
+challenges: "Designing a task state machine that prevents invalid transitions (e.g., can't approve an unclaimed task) while keeping the UX fluid, and building a quality dashboard that surfaces meaningful per-annotator performance metrics in real time."
+shipped: "Multi-user annotation platform with 3 roles (Annotator, Reviewer, Admin), task state machine, annotation UI with keyboard shortcuts and built-in timer, review pipeline with inline rejection feedback, and a quality dashboard tracking rejection rates, throughput, and per-annotator performance."
+impact: "Project managers get immediate visibility into data quality and annotator performance. Rejected tasks return to annotators with specific feedback, creating a closed feedback loop that improves annotation quality over time."
+liveUrl: ""
+githubUrl: "https://github.com/idoroe/labelforge"
+screenshots: []
+---
+
+## The Story
+
+I spent months as an AI model trainer at Mindrift AI, evaluating LLM outputs and reviewing annotations across datasets. The workflow was always the same: claim a task, annotate it, submit for review, get feedback, iterate. But the tools we used were clunky — no quality metrics, no clear rejection feedback, no way to see how the team was performing.
+
+LabelForge is the platform I wished existed. It's a multi-user annotation system with three roles: Annotators claim and label tasks, Reviewers approve or reject with inline comments, and Admins manage projects and monitor quality. The dashboard tracks rejection rates, throughput, and per-annotator performance in real time.
+
+This isn't a theoretical exercise — it's built from real experience with real annotation workflows.
+
+## Role-Based Workflow
+
+Three user roles with distinct permissions and views:
+
+- **Annotators:** see their task queue, claim unclaimed tasks, submit annotations
+- **Reviewers:** see submitted tasks, approve or reject with comments
+- **Admins:** create projects/datasets, bulk upload tasks, view all metrics
+
+Custom Django permissions enforce these boundaries at the API level. A task state machine prevents invalid transitions (e.g., can't approve an unclaimed task).
+
+## Annotation Interface
+
+The core annotation UI displays the text to be labeled, a set of label buttons defined per dataset (e.g., Positive/Negative/Neutral), and keyboard shortcuts (1/2/3) for fast annotation. A built-in timer tracks time spent per task. If a task was previously rejected, the reviewer's feedback is displayed prominently so the annotator knows exactly what to fix.
+
+## Review Pipeline
+
+Reviewers see a queue of submitted tasks with the annotator's label. They can approve with one click or reject with a required comment explaining why. Rejected tasks return to the annotator's queue with the feedback attached. This mirrors the real-world review loops I experienced at Mindrift.
+
+## Quality Dashboard
+
+The dashboard tracks:
+
+- **Completion rate** and daily throughput (bar chart)
+- **Rejection rate** across the project
+- **Per-annotator stats:** tasks completed, rejection rate, average time
+- **Label distribution** (donut chart)
+
+This gives project managers immediate visibility into data quality and annotator performance — something most annotation tools handle poorly.
+
+## What I'd Add Next
+
+- Named Entity Recognition (NER) annotation with text highlighting
+- Inter-annotator agreement scoring (Cohen's Kappa)
+- Real-time notifications when tasks are assigned or rejected (WebSocket)
+- CSV/JSON export of completed annotations

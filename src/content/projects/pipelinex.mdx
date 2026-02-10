@@ -1,0 +1,73 @@
+---
+title: "PipelineX"
+description: "The production wrapper for FinSight — a full CI/CD pipeline, container health monitoring, Grafana dashboards, security scanning, and a live self-healing demo where the system recovers from container failures automatically."
+heroImage: "/post_img.webp"
+tags: ["Docker", "GitHub Actions", "Prometheus", "Grafana", "Trivy"]
+category: "DevOps"
+featured: true
+sortOrder: 3
+problem: "Most portfolio projects end at 'it works on my laptop.' PipelineX is everything that comes after — the production infrastructure that makes FinSight reliable, observable, and automatically recoverable."
+role: "DevOps / SRE Engineer"
+techStack: ["Docker", "Docker Compose", "GitHub Actions", "Prometheus", "Grafana", "Trivy", "Shell Scripting"]
+architecture: "GitHub push triggers a 4-stage GitHub Actions workflow (lint → test → build → Trivy security scan). Production runs via Docker Compose with the FinSight API, frontend, Prometheus (scraping /metrics every 15s), and Grafana (auto-provisioned dashboards). Docker health checks + restart policies enable self-healing."
+challenges: "Auto-provisioning the Grafana dashboard so it loads on boot with zero manual configuration, and creating a compelling failure recovery demo that visually captures the full incident lifecycle on the dashboard."
+shipped: "4-stage CI/CD pipeline via GitHub Actions, Prometheus + Grafana monitoring stack with 5 auto-provisioned dashboard panels, Docker health checks with automatic container restart policies, and a live failure recovery demo script."
+impact: "The demo says it all: kill the API container, the dashboard spikes red, and 10 seconds later it's green again — automatically. No human intervention needed."
+liveUrl: ""
+githubUrl: "https://github.com/idoroe/pipelinex"
+screenshots: []
+---
+
+## The Story
+
+Most portfolio projects end at "it works on my laptop." PipelineX is everything that comes after — the production infrastructure that makes FinSight reliable, observable, and automatically recoverable.
+
+It wraps the FinSight API in a full CI/CD pipeline (lint, test, build, security scan), adds Prometheus metrics collection, and surfaces everything through a Grafana dashboard. Docker health checks and restart policies mean the system self-heals when containers crash.
+
+The demo says it all: I kill the API container, the dashboard spikes red, and 10 seconds later it's green again — automatically.
+
+## CI/CD Pipeline
+
+Every push to main triggers a 4-stage GitHub Actions workflow:
+
+1. **Lint** — ruff checks Python code quality
+2. **Test** — pytest runs API unit tests
+3. **Build** — Docker images built for API and frontend
+4. **Security Scan** — Trivy scans container images for CRITICAL/HIGH vulnerabilities
+
+The pipeline visualization in GitHub is itself a portfolio piece — it shows a clear, professional workflow that mirrors what real engineering teams use.
+
+## Observability Stack
+
+The FinSight API exposes a `/metrics` endpoint using `prometheus-fastapi-instrumentator`. Prometheus scrapes these metrics every 15 seconds. Grafana reads from Prometheus and displays 5 dashboard panels:
+
+1. **Request Rate** — traffic patterns over time
+2. **Error Rate** — spikes red when 5xx errors increase
+3. **P95 Latency** — 95th percentile response time
+4. **Container Status** — green (up) or red (down)
+5. **Request Duration Heatmap** — visual density of response times
+
+The Grafana dashboard is auto-provisioned — it loads on boot with no manual configuration.
+
+## Self-Healing
+
+Docker health checks ping `/health` every 10 seconds. Combined with `restart: always` in Docker Compose, crashed containers are automatically restarted within seconds. No human intervention needed.
+
+## Failure Recovery Demo
+
+A shell script simulates a production incident:
+
+1. Generates normal traffic (20 API requests)
+2. Kills the API container (`docker kill`)
+3. Monitors recovery attempts every 2 seconds
+4. Reports when the API is healthy again (~10–15 seconds)
+
+The Grafana dashboard captures the full story: traffic flowing, sudden drop, error spike, recovery, metrics stabilizing. This 15-second clip is the most compelling visual in my entire portfolio.
+
+## What I'd Add Next
+
+- Terraform for cloud provisioning (AWS ECS)
+- Kubernetes deployment manifests
+- ELK stack for centralized logging
+- Alerting rules with Grafana notifications (Slack/email)
+- Chaos engineering with more failure scenarios

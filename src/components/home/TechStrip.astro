@@ -2,15 +2,27 @@
 const techCategories = [
   {
     label: "Languages",
-    items: ["Python", "Java", "C++", "C", "JavaScript", "SQL", "C#", "HTML", "CSS"],
+    items: ["Python", "Java", "C++", "C", "JavaScript", "TypeScript", "SQL", "C#", "HTML", "CSS"],
   },
   {
-    label: "Frameworks",
-    items: ["React", "Django", "Flask", "REST APIs"],
+    label: "Data Engineering",
+    items: ["dbt", "DuckDB", "Snowflake", "ETL Pipelines", "Star Schema Design"],
   },
   {
-    label: "Tools & Cloud",
-    items: ["AWS", "Docker", "GitHub", "Postman", "Figma", "Microsoft Excel"],
+    label: "Machine Learning",
+    items: ["scikit-learn", "Feature Engineering", "Model Serving", "Isolation Forest"],
+  },
+  {
+    label: "Full-Stack",
+    items: ["React", "Django", "FastAPI", "Flask", "PostgreSQL", "REST APIs", "Node.js"],
+  },
+  {
+    label: "DevOps & Cloud",
+    items: ["Docker", "GitHub Actions", "Prometheus", "Grafana", "Trivy", "AWS"],
+  },
+  {
+    label: "Tools",
+    items: ["GitHub", "Postman", "Figma", "Microsoft Excel"],
   },
 ];
 ---
@@ -18,8 +30,8 @@ const techCategories = [
 <section class="py-12 animate-on-scroll">
   <h2 class="text-2xl font-bold mb-6">Tech Stack</h2>
   <div class="space-y-4">
-    {techCategories.map((cat) => (
-      <div>
+    {techCategories.map((cat, i) => (
+      <div class="animate-slide-left" style={`animation-delay: ${i * 0.08}s;`}>
         <span class="text-sm font-medium text-base-content/50 uppercase tracking-wider">{cat.label}</span>
         <div class="flex flex-wrap gap-2 mt-2">
           {cat.items.map((tech) => (
