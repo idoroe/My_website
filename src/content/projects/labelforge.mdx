@@ -2,19 +2,19 @@
 title: "LabelForge"
 description: "A multi-user annotation platform with role-based workflows, task queues, review pipelines, and quality metrics — built from real experience as an AI model trainer at Mindrift."
 heroImage: "/post_img.webp"
-tags: ["React", "TypeScript", "Django", "PostgreSQL", "JWT Auth"]
+tags: ["React", "TypeScript", "Django", "PostgreSQL", "JWT Auth", "Docker"]
 category: "Full-Stack"
 featured: true
 sortOrder: 2
 problem: "I spent months as an AI model trainer at Mindrift AI, evaluating LLM outputs and reviewing annotations. The workflow was always the same: claim a task, annotate it, submit for review, get feedback, iterate. But the tools we used were clunky — no quality metrics, no clear rejection feedback, no way to see how the team was performing."
 role: "Full-Stack Developer"
-techStack: ["React", "TypeScript", "Django REST Framework", "PostgreSQL", "JWT Authentication"]
+techStack: ["React", "TypeScript", "Django REST Framework", "PostgreSQL", "JWT Authentication", "Docker"]
 architecture: "React frontend communicates with a Django REST API backed by PostgreSQL. JWT handles authentication across three user roles. A task state machine enforces valid workflow transitions: unclaimed → in_progress → submitted → approved/rejected."
 challenges: "Designing a task state machine that prevents invalid transitions (e.g., can't approve an unclaimed task) while keeping the UX fluid, and building a quality dashboard that surfaces meaningful per-annotator performance metrics in real time."
 shipped: "Multi-user annotation platform with 3 roles (Annotator, Reviewer, Admin), task state machine, annotation UI with keyboard shortcuts and built-in timer, review pipeline with inline rejection feedback, and a quality dashboard tracking rejection rates, throughput, and per-annotator performance."
 impact: "Project managers get immediate visibility into data quality and annotator performance. Rejected tasks return to annotators with specific feedback, creating a closed feedback loop that improves annotation quality over time."
 liveUrl: ""
-githubUrl: "https://github.com/idoroe/labelforge"
+githubUrl: "https://github.com/idoroe/LabelForge"
 screenshots: []
 ---
 

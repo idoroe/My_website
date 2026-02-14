@@ -2,19 +2,19 @@
 title: "FinSight"
 description: "An end-to-end data pipeline that transforms raw banking transactions through a dimensional model, detects anomalies using machine learning, and explains each flag with human-readable reasons."
 heroImage: "/post_img.webp"
-tags: ["Python", "dbt", "DuckDB", "FastAPI", "React", "scikit-learn"]
+tags: ["Python", "dbt", "DuckDB", "FastAPI", "React", "TypeScript", "scikit-learn", "Docker"]
 category: "ML"
 featured: true
 sortOrder: 1
 problem: "Before starting my data engineering internship at RBC Borealis, I wanted to deeply understand what a production-grade financial data pipeline looks like — not just the ML model, but the entire journey from raw data to actionable insights."
 role: "Data Engineer / ML Engineer"
-techStack: ["Python", "dbt", "DuckDB", "FastAPI", "React", "scikit-learn", "Isolation Forest"]
+techStack: ["Python", "dbt", "DuckDB", "FastAPI", "React", "TypeScript", "scikit-learn", "Isolation Forest", "Docker"]
 architecture: "Raw CSV transactions flow through a 3-layer dbt pipeline (staging → intermediate → marts) into DuckDB, then an Isolation Forest model scores anomalies. A FastAPI backend serves scored transactions to a React dashboard with explainable reason breakdowns."
 challenges: "Designing a meaningful star schema that mirrors real data warehouse patterns, and building an explainability layer that generates specific, contextual reasons for each flagged transaction instead of just outputting raw anomaly scores."
 shipped: "Full end-to-end pipeline: dimensional data model with fact_transactions and 3 dimension tables, Isolation Forest trained on 50K synthetic transactions flagging the top ~3% as suspicious, and a React dashboard with anomaly detail views showing top 3 deviation reasons."
 impact: "Each flagged transaction shows human-readable explanations like 'this transaction is 7x this customer's average, occurred at 2 AM, and is their first international purchase' — turning opaque ML scores into actionable analyst insights."
 liveUrl: ""
-githubUrl: "https://github.com/idoroe/finsight"
+githubUrl: "https://github.com/idoroe/Finsight-Lite"
 screenshots: []
 ---
 
