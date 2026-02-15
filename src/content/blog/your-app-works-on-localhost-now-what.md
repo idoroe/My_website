@@ -2,7 +2,7 @@
 title: "Your App Works on Localhost. Now What?"
 description: "Adding CI/CD, Prometheus monitoring, Grafana dashboards, and self-healing containers to a real project — because 'it works on my machine' isn't a deployment strategy."
 pubDate: "Feb 01 2026"
-heroImage: "/post_img.webp"
+heroImage: "/screenshots/pipelinex-hero.webp"
 tags: ["devops", "docker", "monitoring", "cicd"]
 ---
 
@@ -133,4 +133,4 @@ If you have a project running in Docker right now, I'd encourage you to add a `/
 
 ---
 
-Check out the [full case study](/projects/pipelinex) or browse the [GitHub repo](https://github.com/idoroe/pipelinex).
+Check out the [full case study](/projects/pipelinex) or browse the [GitHub repo](https://github.com/idoroe/PipelineX).

@@ -2,7 +2,7 @@
 title: "Building a Bank-Grade Anomaly Detection Pipeline from Scratch"
 description: "How I used dbt, DuckDB, and Isolation Forest to build FinSight — an end-to-end data pipeline that catches suspicious transactions and explains why they're flagged."
 pubDate: "Feb 08 2026"
-heroImage: "/post_img.webp"
+heroImage: "/screenshots/finsight-hero.webp"
 tags: ["data-engineering", "machine-learning", "dbt", "python"]
 ---
 
@@ -75,4 +75,4 @@ I'd also explore SHAP values for deeper explainability. My current approach work
 
 FinSight is the project I'm most proud of — not because it's the most technically complex, but because it forced me to think like a data engineer before I'd ever been one. Every decision I made here (star schema, dbt layers, explainability) came from trying to understand how production systems actually work.
 
-Check out the [full case study](/projects/finsight) or browse the [GitHub repo](https://github.com/idoroe/finsight).
+Check out the [full case study](/projects/finsight) or browse the [GitHub repo](https://github.com/idoroe/Finsight-Lite).

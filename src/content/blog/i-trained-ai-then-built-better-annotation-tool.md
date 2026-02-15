@@ -2,7 +2,7 @@
 title: "I Trained AI Models for a Living — Then Built a Better Annotation Tool"
 description: "How my experience at Mindrift AI as an AI model trainer inspired LabelForge — a multi-user annotation platform with role-based workflows and quality tracking."
 pubDate: "Feb 05 2026"
-heroImage: "/post_img.webp"
+heroImage: "/screenshots/labelforge-hero.webp"
 tags: ["full-stack", "django", "react", "ai"]
 ---
 
@@ -87,4 +87,4 @@ If you've ever been annoyed by a tool at work and thought "I could build somethi
 
 ---
 
-Check out the [full case study](/projects/labelforge) or browse the [GitHub repo](https://github.com/idoroe/labelforge).
+Check out the [full case study](/projects/labelforge) or browse the [GitHub repo](https://github.com/idoroe/LabelForge).
