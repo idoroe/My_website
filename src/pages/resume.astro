@@ -33,25 +33,24 @@ import { PERSON_NAME } from "../config";
       <h2>About {PERSON_NAME}</h2>
       <p>
         4th-year Software Engineering student at the University of Calgary's Schulich School of Engineering
-        (graduating 2027) with hands-on experience in data engineering, full-stack development, AI model training,
+        (graduating June 2028) with hands-on experience in data engineering, full-stack development, AI model training,
         and production infrastructure. Incoming Data Engineering Intern at RBC Borealis on the Enterprise Data Hub team (May 2026).
       </p>
 
       <h3>Key Projects</h3>
       <ul>
-        <li><strong>FinSight</strong> — Built end-to-end data pipeline: raw transactions → dbt star schema → ML scoring → React dashboard. Trained Isolation Forest model on 50K synthetic transactions with human-readable explainability.</li>
-        <li><strong>LabelForge</strong> — Built multi-user annotation platform with 3 roles (Annotator, Reviewer, Admin), task state machine, and quality dashboard tracking rejection rates and per-annotator performance.</li>
-        <li><strong>PipelineX</strong> — Designed 4-stage CI/CD pipeline with Prometheus + Grafana monitoring, Docker self-healing containers, and live failure recovery demo.</li>
+        <li><strong>FinSight</strong> — End-to-end anomaly-detection pipeline in Python and SQL that ingests 10K+ synthetic banking transactions, engineers 20+ fraud features, and scores them through a FastAPI service. PostgreSQL schema with 5+ dbt transformation scripts powering analyst dashboards. Containerized 3-service Docker Compose stack.</li>
+        <li><strong>PipelineX</strong> — 4-stage GitHub Actions pipeline (lint → tests → Docker build → Trivy security scan). Production Docker Compose deployment with health checks and restart policies across 4 core services. Prometheus + Grafana dashboards visualizing latency, error rates, and restarts during incident simulations.</li>
+        <li><strong>LabelForge</strong> — Full-stack collaborative labeling tool with React, Node.js, and PostgreSQL supporting parallel annotation of 100+ items per session. WebSocket-powered real-time editing for up to 5 concurrent annotators. Reviewer-productivity features that cut batch preparation from ~10 manual actions to 3 automated ones.</li>
       </ul>
 
       <h3>Key Qualifications</h3>
       <ul>
-        <li>Data engineering: dbt, DuckDB, Snowflake, ETL pipelines, star schema design</li>
-        <li>Machine learning: scikit-learn, Isolation Forest, feature engineering, model serving</li>
-        <li>Full-stack development: React, TypeScript, Django, FastAPI, PostgreSQL, REST APIs</li>
-        <li>DevOps & infrastructure: Docker, GitHub Actions, Prometheus, Grafana, Trivy, AWS</li>
-        <li>Performance engineering: cut page loads by 44%, reduced p95 query times by 67%</li>
-        <li>AI model training: boosted code-suggestion accuracy by 20% at Outlier AI</li>
+        <li>Programming languages: Python, Java, SQL, C, C++, JavaScript, TypeScript, C#</li>
+        <li>Frameworks & Libraries: React, Django, FastAPI, Flask, REST APIs, scikit-learn</li>
+        <li>Tools & Technologies: AWS, Docker, Docker Compose, dbt, DuckDB, Git, GitHub Actions, Prometheus, Grafana, Trivy, WebSockets</li>
+        <li>Performance engineering: cut page loads by 44%, reduced p95 query times by 67% at Learn Easy Academy</li>
+        <li>AI model training: analyze 150+ coding tasks/week at Mindrift AI, improving model pass rates by ~10%</li>
         <li>Strong foundation in data structures, algorithms, OOP (Java), and software design (C++)</li>
       </ul>
     </section>

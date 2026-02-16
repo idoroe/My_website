@@ -1,6 +1,6 @@
 ---
 title: "Building a Bank-Grade Anomaly Detection Pipeline from Scratch"
-description: "How I used dbt, DuckDB, and Isolation Forest to build FinSight — an end-to-end data pipeline that catches suspicious transactions and explains why they're flagged."
+description: "How I used dbt, PostgreSQL, and Isolation Forest to build FinSight — an end-to-end data pipeline that catches suspicious transactions and explains why they're flagged."
 pubDate: "Feb 08 2026"
 heroImage: "/screenshots/finsight-hero.webp"
 tags: ["data-engineering", "machine-learning", "dbt", "python"]

@@ -1,9 +1,9 @@
 ---
 title: "I Trained AI Models for a Living — Then Built a Better Annotation Tool"
-description: "How my experience at Mindrift AI as an AI model trainer inspired LabelForge — a multi-user annotation platform with role-based workflows and quality tracking."
+description: "How my experience at Mindrift AI as an AI model trainer inspired LabelForge — a collaborative annotation platform with real-time WebSocket editing and quality tracking."
 pubDate: "Feb 05 2026"
 heroImage: "/screenshots/labelforge-hero.webp"
-tags: ["full-stack", "django", "react", "ai"]
+tags: ["full-stack", "nodejs", "react", "websockets"]
 ---
 
 Before I ever wrote a line of code for LabelForge, I spent months doing the work it was designed to support. As an AI model trainer at Mindrift AI, my day looked like this: log in, claim a batch of tasks from the queue, read an LLM-generated response, evaluate whether it was correct, annotate it according to the guidelines, submit it, and wait for a reviewer to approve or reject my work.
@@ -27,15 +27,19 @@ unclaimed → in_progress → submitted → approved
 
 This sounds simple, but getting it right at the API level matters. You can't approve an unclaimed task. You can't submit a task you haven't claimed. You can't reject a task that's already approved. Every invalid transition returns a clear error — no silent data corruption.
 
-In Django, I enforced this with custom model methods that validate the current state before allowing a transition:
+On the backend, I enforced this with validation logic that checks the current state before allowing any transition:
 
-```python
-def submit(self):
-    if self.status != 'in_progress':
-        raise InvalidTransition(f"Cannot submit task in '{self.status}' state")
-    self.status = 'submitted'
-    self.submitted_at = timezone.now()
-    self.save()
+```javascript
+async function submitTask(taskId, userId) {
+  const task = await db.query('SELECT * FROM tasks WHERE id = $1', [taskId]);
+  if (task.status !== 'in_progress') {
+    throw new Error(`Cannot submit task in '${task.status}' state`);
+  }
+  await db.query(
+    'UPDATE tasks SET status = $1, submitted_at = NOW() WHERE id = $2',
+    ['submitted', taskId]
+  );
+}
 ```
 
 The simplicity is intentional. A state machine with 5 states and clear rules is easier to reason about than a freeform status field that any API endpoint can update to anything.
@@ -50,7 +54,7 @@ LabelForge has three user roles, and each one sees a different app:
 
 **Admins** create projects, upload task datasets in bulk, and see the quality dashboard. They never touch individual tasks — they manage the system.
 
-Custom Django permissions enforce role boundaries at the API level. An annotator can't hit the review endpoint even if they construct the request manually. This isn't just good practice — in real annotation platforms, accidentally leaking reviewer-level access to annotators would compromise data quality.
+Middleware and route-level checks enforce role boundaries at the API level. An annotator can't hit the review endpoint even if they construct the request manually. This isn't just good practice — in real annotation platforms, accidentally leaking reviewer-level access to annotators would compromise data quality.
 
 ## Why Quality Metrics Matter More Than You Think
 
@@ -79,7 +83,7 @@ In practice, this means the annotation UI shows a highlighted banner when a task
 
 ## What I Actually Learned
 
-Building LabelForge taught me more about full-stack architecture than any course project. JWT authentication across three roles. Django REST Framework serializers that return different fields depending on who's asking. React state management for a multi-step annotation workflow. PostgreSQL queries that aggregate per-user stats without killing performance.
+Building LabelForge taught me more about full-stack architecture than any course project. WebSocket-powered real-time collaboration across concurrent users. Node.js middleware that enforces role boundaries. React state management for a multi-step annotation workflow. PostgreSQL queries that aggregate per-user stats without killing performance.
 
 But the bigger lesson was this: the best project ideas come from real frustration. I didn't brainstorm LabelForge in a vacuum. I sat in those annotation queues, dealt with the missing feedback, wished for the dashboard that didn't exist, and then built it.
 

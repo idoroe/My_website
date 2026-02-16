@@ -1,18 +1,18 @@
 ---
 title: "LabelForge"
-description: "A multi-user annotation platform with role-based workflows, task queues, review pipelines, and quality metrics — built from real experience as an AI model trainer at Mindrift."
+description: "A full-stack collaborative AI training data labeling tool with real-time multi-user annotation, WebSocket-powered conflict-free editing, and reviewer-productivity features — built from real experience as an AI model trainer at Mindrift."
 heroImage: "/screenshots/labelforge-hero.webp"
-tags: ["React", "TypeScript", "Django", "PostgreSQL", "JWT Auth", "Docker"]
+tags: ["React", "Node.js", "PostgreSQL", "WebSockets", "Docker"]
 category: "Full-Stack"
 featured: true
 sortOrder: 2
 problem: "I spent months as an AI model trainer at Mindrift AI, evaluating LLM outputs and reviewing annotations. The workflow was always the same: claim a task, annotate it, submit for review, get feedback, iterate. But the tools we used were clunky — no quality metrics, no clear rejection feedback, no way to see how the team was performing."
 role: "Full-Stack Developer"
-techStack: ["React", "TypeScript", "Django REST Framework", "PostgreSQL", "JWT Authentication", "Docker"]
-architecture: "React frontend communicates with a Django REST API backed by PostgreSQL. JWT handles authentication across three user roles. A task state machine enforces valid workflow transitions: unclaimed → in_progress → submitted → approved/rejected."
-challenges: "Designing a task state machine that prevents invalid transitions (e.g., can't approve an unclaimed task) while keeping the UX fluid, and building a quality dashboard that surfaces meaningful per-annotator performance metrics in real time."
-shipped: "Multi-user annotation platform with 3 roles (Annotator, Reviewer, Admin), task state machine, annotation UI with keyboard shortcuts and built-in timer, review pipeline with inline rejection feedback, and a quality dashboard tracking rejection rates, throughput, and per-annotator performance."
-impact: "Project managers get immediate visibility into data quality and annotator performance. Rejected tasks return to annotators with specific feedback, creating a closed feedback loop that improves annotation quality over time."
+techStack: ["React", "Node.js", "PostgreSQL", "WebSockets", "Docker"]
+architecture: "React frontend communicates with a Node.js backend backed by PostgreSQL. WebSockets enable real-time collaborative editing so up to 5 concurrent annotators can work on the same task without overwriting each other's work. Conflict-free update logic ensures data integrity across sessions."
+challenges: "Implementing conflict-free real-time collaboration across multiple concurrent annotators using WebSockets, and building reviewer-productivity features (keyboard shortcuts, disagreement heatmaps, export scripts) that meaningfully cut manual workflow steps."
+shipped: "Full-stack collaborative labeling tool supporting parallel annotation of 100+ items per session for text and coding tasks. Real-time multi-user editing via WebSockets. Reviewer-productivity features including keyboard shortcuts, disagreement heatmaps, and export scripts that cut batch preparation from ~10 manual actions to 3 automated ones."
+impact: "Teams can annotate and review training data collaboratively in real time. Reviewer-productivity features cut the steps to prepare a training batch from about 10 manual actions to 3 automated ones."
 liveUrl: ""
 githubUrl: "https://github.com/idoroe/LabelForge"
 screenshots: ["/screenshots/labelforge-annotate.webp", "/screenshots/labelforge-quality.webp", "/screenshots/labelforge-review.webp", "/screenshots/labelforge-admin.webp"]
@@ -22,27 +22,27 @@ screenshots: ["/screenshots/labelforge-annotate.webp", "/screenshots/labelforge-
 
 I spent months as an AI model trainer at Mindrift AI, evaluating LLM outputs and reviewing annotations across datasets. The workflow was always the same: claim a task, annotate it, submit for review, get feedback, iterate. But the tools we used were clunky — no quality metrics, no clear rejection feedback, no way to see how the team was performing.
 
-LabelForge is the platform I wished existed. It's a multi-user annotation system with three roles: Annotators claim and label tasks, Reviewers approve or reject with inline comments, and Admins manage projects and monitor quality. The dashboard tracks rejection rates, throughput, and per-annotator performance in real time.
+LabelForge is the platform I wished existed. It's a full-stack collaborative labeling tool built with React, Node.js, and PostgreSQL that supports parallel annotation of 100+ items per session for text and coding tasks. The dashboard tracks rejection rates, throughput, and per-annotator performance in real time.
 
 This isn't a theoretical exercise — it's built from real experience with real annotation workflows.
 
-## Role-Based Workflow
+## Real-Time Collaborative Annotation
 
-Three user roles with distinct permissions and views:
-
-- **Annotators:** see their task queue, claim unclaimed tasks, submit annotations
-- **Reviewers:** see submitted tasks, approve or reject with comments
-- **Admins:** create projects/datasets, bulk upload tasks, view all metrics
-
-Custom Django permissions enforce these boundaries at the API level. A task state machine prevents invalid transitions (e.g., can't approve an unclaimed task).
+The core differentiator is real-time collaboration. I integrated WebSockets and conflict-free update logic so up to 5 concurrent annotators can edit the same task in real time without overwriting each other's work. No more "someone else is working on this" lockouts — everyone can contribute simultaneously, and the system handles merge conflicts automatically.
 
 ## Annotation Interface
 
-The core annotation UI displays the text to be labeled, a set of label buttons defined per dataset (e.g., Positive/Negative/Neutral), and keyboard shortcuts (1/2/3) for fast annotation. A built-in timer tracks time spent per task. If a task was previously rejected, the reviewer's feedback is displayed prominently so the annotator knows exactly what to fix.
+The annotation UI displays the text to be labeled, a set of label buttons defined per dataset (e.g., Positive/Negative/Neutral), and keyboard shortcuts for fast annotation. A built-in timer tracks time spent per task. If a task was previously rejected, the reviewer's feedback is displayed prominently so the annotator knows exactly what to fix.
 
-## Review Pipeline
+## Reviewer Productivity Features
 
-Reviewers see a queue of submitted tasks with the annotator's label. They can approve with one click or reject with a required comment explaining why. Rejected tasks return to the annotator's queue with the feedback attached. This mirrors the real-world review loops I experienced at Mindrift.
+This is where my experience at Mindrift directly shaped the product. I built features that address the exact pain points I had as a reviewer:
+
+- **Keyboard shortcuts** — approve, reject, and navigate without touching the mouse
+- **Disagreement heatmaps** — visually highlight items where annotators disagree, so reviewers focus attention where it matters
+- **Export scripts** — automated batch preparation that cuts the steps from about 10 manual actions to 3 automated ones
+
+These aren't nice-to-haves. They're the difference between a tool people tolerate and one they actually want to use.
 
 ## Quality Dashboard
 
@@ -59,5 +59,5 @@ This gives project managers immediate visibility into data quality and annotator
 
 - Named Entity Recognition (NER) annotation with text highlighting
 - Inter-annotator agreement scoring (Cohen's Kappa)
-- Real-time notifications when tasks are assigned or rejected (WebSocket)
-- CSV/JSON export of completed annotations
+- Role-based access control for different project configurations
+- CSV/JSON export of completed annotations with quality metadata
