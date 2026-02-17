@@ -2,16 +2,16 @@
 title: "FinSight"
 description: "An end-to-end data pipeline that transforms raw banking transactions through a dimensional model, detects anomalies using machine learning, and explains each flag with human-readable reasons."
 heroImage: "/screenshots/finsight-hero.webp"
-tags: ["Python", "FastAPI", "PostgreSQL", "Docker", "dbt", "Grafana", "React", "TypeScript", "scikit-learn"]
+tags: ["Python", "FastAPI", "DuckDB", "dbt", "scikit-learn", "React", "Docker"]
 category: "ML"
 featured: true
 sortOrder: 1
 problem: "Before starting my data engineering internship at RBC Borealis, I wanted to deeply understand what a production-grade financial data pipeline looks like — not just the ML model, but the entire journey from raw data to actionable insights."
 role: "Data Engineer / ML Engineer"
-techStack: ["Python", "FastAPI", "PostgreSQL", "Docker", "dbt", "Grafana", "React", "TypeScript", "scikit-learn", "Isolation Forest"]
-architecture: "An end-to-end anomaly-detection pipeline in Python and SQL that ingests batches of 10K+ synthetic banking transactions, engineers 20+ fraud features, and scores them through a FastAPI service. A PostgreSQL schema and 5+ dbt transformation scripts power dashboards that let analysts slice transactions by customer, merchant, and risk band in under 2–3 seconds per query."
+techStack: ["Python", "FastAPI", "DuckDB", "dbt", "scikit-learn", "React", "Docker", "Isolation Forest"]
+architecture: "An end-to-end anomaly-detection pipeline that ingests 50K synthetic banking transactions, transforms them through a dbt dimensional model (staging → intermediate → marts), and scores them with an Isolation Forest via FastAPI. A DuckDB star schema (fact + 3 dimension tables) with dbt-managed transformations and data quality tests powers a React dashboard with anomaly explanations ranked by severity."
 challenges: "Designing a meaningful star schema that mirrors real data warehouse patterns, and building an explainability layer that generates specific, contextual reasons for each flagged transaction instead of just outputting raw anomaly scores."
-shipped: "End-to-end anomaly-detection pipeline ingesting 10K+ synthetic banking transactions, a PostgreSQL schema with 5+ transformation scripts powering analyst dashboards, and a containerized 3-service Docker Compose stack that spins up new environments in under 1 minute."
+shipped: "End-to-end anomaly-detection pipeline ingesting 50K synthetic banking transactions, a DuckDB star schema (fact + 3 dimension tables) with dbt-managed transformations and data quality tests, and a containerized Docker Compose stack with single-command startup that runs data generation, dbt transforms, model training, and scoring automatically on first boot."
 impact: "Each flagged transaction shows human-readable explanations like 'this transaction is 7x this customer's average, occurred at 2 AM, and is their first international purchase' — turning opaque ML scores into actionable analyst insights."
 liveUrl: ""
 githubUrl: "https://github.com/idoroe/Finsight-Lite"

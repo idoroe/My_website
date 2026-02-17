@@ -39,9 +39,9 @@ import { PERSON_NAME } from "../config";
 
       <h3>Key Projects</h3>
       <ul>
-        <li><strong>FinSight</strong> — End-to-end anomaly-detection pipeline in Python and SQL that ingests 10K+ synthetic banking transactions, engineers 20+ fraud features, and scores them through a FastAPI service. PostgreSQL schema with 5+ dbt transformation scripts powering analyst dashboards. Containerized 3-service Docker Compose stack.</li>
-        <li><strong>PipelineX</strong> — 4-stage GitHub Actions pipeline (lint → tests → Docker build → Trivy security scan). Production Docker Compose deployment with health checks and restart policies across 4 core services. Prometheus + Grafana dashboards visualizing latency, error rates, and restarts during incident simulations.</li>
-        <li><strong>LabelForge</strong> — Full-stack collaborative labeling tool with React, Node.js, and PostgreSQL supporting parallel annotation of 100+ items per session. WebSocket-powered real-time editing for up to 5 concurrent annotators. Reviewer-productivity features that cut batch preparation from ~10 manual actions to 3 automated ones.</li>
+        <li><strong>FinSight</strong> — End-to-end anomaly-detection pipeline that ingests 50K synthetic banking transactions, transforms them through a dbt dimensional model (staging → intermediate → marts), and scores them with an Isolation Forest via FastAPI. DuckDB star schema (fact + 3 dimension tables) with dbt-managed transformations and data quality tests. Containerized Docker Compose stack with single-command startup.</li>
+        <li><strong>PipelineX</strong> — 4-stage CI/CD pipeline (lint → tests → build → Trivy scan) that blocks merges on quality or security failures. Production Docker Compose deployment with health checks across 4 services. Prometheus (15+ metrics) and Grafana dashboards for latency, error rates, and restarts, enabling sub-5-minute incident diagnosis.</li>
+        <li><strong>LabelForge</strong> — Full-stack annotation platform with React, TypeScript, Django REST Framework, PostgreSQL, and JWT Auth. 3 role-based workflows (Annotator, Reviewer, Admin) with a task state machine enforcing valid transitions at the API level. Keyboard shortcuts enhancing usability for 15+ reviewers, reducing revision requests by 30%. Quality dashboard with per-annotator metrics filterable by project.</li>
       </ul>
 
       <h3>Key Qualifications</h3>
@@ -50,7 +50,7 @@ import { PERSON_NAME } from "../config";
         <li>Frameworks & Libraries: React, Django, FastAPI, Flask, REST APIs, scikit-learn</li>
         <li>Tools & Technologies: AWS, Docker, Docker Compose, dbt, DuckDB, Git, GitHub Actions, Prometheus, Grafana, Trivy, WebSockets</li>
         <li>Performance engineering: cut page loads by 44%, reduced p95 query times by 67% at Learn Easy Academy</li>
-        <li>AI model training: analyze 150+ coding tasks/week at Mindrift AI, improving model pass rates by ~10%</li>
+        <li>AI model training: write 50 Java/OOP prompts weekly at Mindrift AI, improving eval accuracy ~20%; created JS/React training sets at Outlier AI raising accuracy by 20%</li>
         <li>Strong foundation in data structures, algorithms, OOP (Java), and software design (C++)</li>
       </ul>
     </section>

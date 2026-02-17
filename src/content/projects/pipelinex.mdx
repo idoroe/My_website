@@ -11,7 +11,7 @@ role: "DevOps / SRE Engineer"
 techStack: ["Docker", "Docker Compose", "GitHub Actions", "Prometheus", "Grafana", "Trivy", "Shell Scripting"]
 architecture: "GitHub push triggers a 4-stage GitHub Actions workflow (lint → test → build → Trivy security scan). Production runs via Docker Compose with the FinSight API, frontend, Prometheus (scraping /metrics every 15s), and Grafana (auto-provisioned dashboards). Docker health checks + restart policies enable self-healing."
 challenges: "Auto-provisioning the Grafana dashboard so it loads on boot with zero manual configuration, and creating a compelling failure recovery demo that visually captures the full incident lifecycle on the dashboard."
-shipped: "4-stage CI/CD pipeline via GitHub Actions, Prometheus + Grafana monitoring stack with 5 auto-provisioned dashboard panels, Docker health checks with automatic container restart policies, and a live failure recovery demo script."
+shipped: "4-stage CI/CD pipeline (lint → tests → build → Trivy scan) that blocks merges on quality or security failures. Production-style Docker Compose deployment with health checks across 4 services, cutting manual restart time from minutes to seconds. Prometheus (15+ metrics) and Grafana dashboards for latency, error rates, and restarts, enabling sub-5-minute incident diagnosis."
 impact: "The demo says it all: kill the API container, the dashboard spikes red, and 10 seconds later it's green again — automatically. No human intervention needed."
 liveUrl: ""
 githubUrl: "https://github.com/idoroe/PipelineX"

@@ -1,9 +1,9 @@
 ---
 title: "I Trained AI Models for a Living — Then Built a Better Annotation Tool"
-description: "How my experience at Mindrift AI as an AI model trainer inspired LabelForge — a collaborative annotation platform with real-time WebSocket editing and quality tracking."
+description: "How my experience at Mindrift AI as an AI model trainer inspired LabelForge — a multi-user annotation platform with Django REST Framework, JWT auth, role-based workflows, and a quality dashboard."
 pubDate: "Feb 05 2026"
 heroImage: "/screenshots/labelforge-hero.webp"
-tags: ["full-stack", "nodejs", "react", "websockets"]
+tags: ["full-stack", "django", "react", "typescript"]
 ---
 
 Before I ever wrote a line of code for LabelForge, I spent months doing the work it was designed to support. As an AI model trainer at Mindrift AI, my day looked like this: log in, claim a batch of tasks from the queue, read an LLM-generated response, evaluate whether it was correct, annotate it according to the guidelines, submit it, and wait for a reviewer to approve or reject my work.
@@ -27,19 +27,17 @@ unclaimed → in_progress → submitted → approved
 
 This sounds simple, but getting it right at the API level matters. You can't approve an unclaimed task. You can't submit a task you haven't claimed. You can't reject a task that's already approved. Every invalid transition returns a clear error — no silent data corruption.
 
-On the backend, I enforced this with validation logic that checks the current state before allowing any transition:
+On the backend, I enforced this with validation logic in Django REST Framework that checks the current state before allowing any transition:
 
-```javascript
-async function submitTask(taskId, userId) {
-  const task = await db.query('SELECT * FROM tasks WHERE id = $1', [taskId]);
-  if (task.status !== 'in_progress') {
-    throw new Error(`Cannot submit task in '${task.status}' state`);
-  }
-  await db.query(
-    'UPDATE tasks SET status = $1, submitted_at = NOW() WHERE id = $2',
-    ['submitted', taskId]
-  );
-}
+```python
+def submit_task(self, request, pk=None):
+    task = self.get_object()
+    if task.status != 'in_progress':
+        raise ValidationError(f"Cannot submit task in '{task.status}' state")
+    task.status = 'submitted'
+    task.submitted_at = timezone.now()
+    task.save()
+    return Response(TaskSerializer(task).data)
 ```
 
 The simplicity is intentional. A state machine with 5 states and clear rules is easier to reason about than a freeform status field that any API endpoint can update to anything.
@@ -83,7 +81,7 @@ In practice, this means the annotation UI shows a highlighted banner when a task
 
 ## What I Actually Learned
 
-Building LabelForge taught me more about full-stack architecture than any course project. WebSocket-powered real-time collaboration across concurrent users. Node.js middleware that enforces role boundaries. React state management for a multi-step annotation workflow. PostgreSQL queries that aggregate per-user stats without killing performance.
+Building LabelForge taught me more about full-stack architecture than any course project. Django REST Framework viewsets and serializers that enforce role boundaries across three user types. JWT authentication securing every API endpoint. React + TypeScript state management for a multi-step annotation workflow. PostgreSQL queries that aggregate per-user stats without killing performance.
 
 But the bigger lesson was this: the best project ideas come from real frustration. I didn't brainstorm LabelForge in a vacuum. I sat in those annotation queues, dealt with the missing feedback, wished for the dashboard that didn't exist, and then built it.
 
