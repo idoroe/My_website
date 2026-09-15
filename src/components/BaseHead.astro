@@ -7,7 +7,7 @@ import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 
-import { SITE_TITLE, PERSON_NAME } from '../config';
+import { SITE_TITLE, PERSON_NAME, SOCIAL_LINKS } from '../config';
 
 export interface Props {
   title: string;
@@ -16,8 +16,11 @@ export interface Props {
   ogType?: string;
 }
 
-const { title, description, image = '/social_img.webp', ogType = 'website' } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const { title, description, image = '/social-card.png', ogType = 'website' } = Astro.props;
+const pageTitle = title.includes(PERSON_NAME) ? title : `${title} | ${PERSON_NAME}`;
+const siteURL = Astro.site ?? new URL(Astro.url.origin);
+const canonicalURL = new URL(Astro.url.pathname, siteURL);
+const imageURL = new URL(image, siteURL);
 
 // JSON-LD structured data
 const jsonLd = {
@@ -26,15 +29,15 @@ const jsonLd = {
     {
       "@type": "WebSite",
       "name": SITE_TITLE,
-      "url": Astro.site?.toString(),
+      "url": siteURL.toString(),
     },
     {
       "@type": "Person",
       "name": PERSON_NAME,
-      "url": Astro.site?.toString(),
+      "url": siteURL.toString(),
       "sameAs": [
-        "https://github.com/idoroe",
-        "https://www.linkedin.com/in/emmanuel-idoro-2642b924b/",
+        SOCIAL_LINKS.github,
+        SOCIAL_LINKS.linkedin,
       ],
     },
   ],
@@ -53,23 +56,28 @@ const jsonLd = {
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Primary Meta Tags -->
-<title>{title}</title>
-<meta name="title" content={title} />
+<title>{pageTitle}</title>
+<meta name="title" content={pageTitle} />
 <meta name="description" content={description} />
+<meta name="author" content={PERSON_NAME} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />
-<meta property="og:url" content={Astro.url} />
-<meta property="og:title" content={title} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:site_name" content={PERSON_NAME} />
+<meta property="og:locale" content="en_CA" />
+<meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:image:alt" content={`${PERSON_NAME} — ${title}`} />
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.url)} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />
+<meta name="twitter:image:alt" content={`${PERSON_NAME} — ${title}`} />
 
 <!-- JSON-LD Structured Data -->
-<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />

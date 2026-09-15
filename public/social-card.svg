@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#67e8f9"/></linearGradient></defs>
+<rect width="1200" height="630" fill="#0d1019"/><rect x="52" y="52" width="1096" height="526" rx="24" fill="#141824" stroke="#313246"/>
+<path d="M52 100h1096" stroke="#313246"/><circle cx="82" cy="77" r="5" fill="#a78bfa"/><circle cx="102" cy="77" r="5" fill="#67e8f9"/><circle cx="122" cy="77" r="5" fill="#7b829a"/>
+<g font-family="Inter, Arial, sans-serif"><text x="92" y="167" fill="#c4b5fd" font-size="18" letter-spacing="4">SOFTWARE ENGINEERING · DATA</text>
+<text x="88" y="274" fill="#f4f4f5" font-size="78" font-weight="700" letter-spacing="-3">Emmanuel Idoro<tspan fill="#a78bfa">.</tspan></text>
+<text x="92" y="342" fill="#d1d5db" font-size="30">Building useful, dependable systems.</text>
+<text x="92" y="423" fill="#e5e7eb" font-size="23">Data Engineer Intern at RBC</text>
+<text x="92" y="461" fill="#a8b0c1" font-size="21">University of Calgary · B.Sc. Software Engineering</text>
+<text x="92" y="535" fill="#c4b5fd" font-size="19">emmanuelidoro.netlify.app</text></g>
+<path d="M994 460h70v-70M1062 392l-94 94" stroke="url(#g)" stroke-width="9" fill="none" stroke-linecap="round"/>
+</svg>

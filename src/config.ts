@@ -1,14 +1,14 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
-export const SITE_TITLE = 'Emmanuel Idoro | Data Engineer & Full-Stack Developer';
-export const SITE_DESCRIPTION = 'Portfolio of Emmanuel Idoro — 4th-year Software Engineering student at the University of Calgary. Building end-to-end data pipelines, ML systems, and production infrastructure.';
+export const SITE_TITLE = 'Emmanuel Idoro | Software Engineering & Data';
+export const SITE_DESCRIPTION = 'Emmanuel Idoro, Software Engineering student at the University of Calgary and Data Engineer Intern at RBC. Explore data engineering, full-stack, and DevOps projects. Expected graduation: June 2028.';
 export const GENERATE_SLUG_FROM_TITLE = true;
 export const TRANSITION_API = true;
 
 export const PERSON_NAME = 'Emmanuel Idoro';
-export const PERSON_TITLE = 'Data Engineer & Full-Stack Developer';
-export const PERSON_TAGLINE = 'I build end-to-end systems — from data pipelines and ML models to the production infrastructure that keeps them running.';
+export const PERSON_TITLE = 'Software Engineering Student · Data Engineer Intern at RBC';
+export const PERSON_TAGLINE = 'I build systems that make data useful, reliable, and easier to act on.';
 export const PERSON_PHONE = '(825) 365-9571';
 export const PERSON_LOCATION = 'Calgary, Canada';
 
@@ -19,6 +19,7 @@ export const NAV_ITEMS = [
   { label: 'Experience', href: '/experience' },
   { label: 'Blog', href: '/blog' },
   { label: 'Resume', href: '/resume' },
+  { label: 'References', href: '/references' },
   { label: 'Contact', href: '/contact' },
 ];
 

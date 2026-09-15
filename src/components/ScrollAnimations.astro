@@ -1,26 +1,70 @@
-<!-- Scroll animation observer -->
 <script>
+  let observer: IntersectionObserver | undefined;
+  let animationController: AbortController | undefined;
+
   function initScrollAnimations() {
-    const observer = new IntersectionObserver(
+    observer?.disconnect();
+    animationController?.abort();
+    animationController = new AbortController();
+    const { signal } = animationController;
+    const elements = document.querySelectorAll<HTMLElement>('.animate-on-scroll');
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function revealAll() {
+      observer?.disconnect();
+      elements.forEach((element) => {
+        element.classList.remove('is-pending');
+        element.classList.add('visible');
+      });
+    }
+
+    if (motionPreference.matches || !('IntersectionObserver' in window)) {
+      revealAll();
+      return;
+    }
+
+    observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
+            entry.target.classList.remove('is-pending');
+            observer?.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+      { threshold: 0, rootMargin: '0px 0px -20px 0px' }
     );
 
-    document.querySelectorAll('.animate-on-scroll').forEach((el) => {
-      observer.observe(el);
+    elements.forEach((element) => {
+      // Keep content already in view visible; only enhance sections below it.
+      if (element.getBoundingClientRect().top < window.innerHeight) {
+        element.classList.remove('is-pending');
+        element.classList.add('visible');
+      } else if (!element.classList.contains('visible')) {
+        element.classList.add('is-pending');
+        observer?.observe(element);
+      }
     });
+
+    document.addEventListener('focusin', (event) => {
+      const section = (event.target as Element).closest('.animate-on-scroll.is-pending');
+      if (section) {
+        section.classList.add('visible');
+        section.classList.remove('is-pending');
+        observer?.unobserve(section);
+      }
+    }, { signal });
+
+    motionPreference.addEventListener('change', (event) => {
+      if (event.matches) revealAll();
+    }, { signal });
   }
 
-  // Run on initial load
   initScrollAnimations();
-
-  // Re-run after View Transitions navigation
-  document.addEventListener('astro:after-swap', initScrollAnimations);
+  document.addEventListener('astro:page-load', initScrollAnimations);
+  document.addEventListener('astro:before-swap', () => {
+    observer?.disconnect();
+    animationController?.abort();
+  });
 </script>

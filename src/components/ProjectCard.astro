@@ -29,13 +29,13 @@ const { title, description, heroImage, tags, category, slug } = Astro.props;
     </figure>
   )}
   <div class="p-5">
-    <div class="flex items-center gap-2 mb-2">
+    <div class="flex flex-wrap items-center gap-2 mb-2">
       <span class="badge badge-sm badge-primary">{category}</span>
       {tags.slice(0, 2).map((tag) => (
         <span class="badge badge-sm badge-outline">{tag}</span>
       ))}
     </div>
-    <h3 class="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">{title}</h3>
-    <p class="text-sm text-base-content/60 line-clamp-2">{description}</p>
+    <h2 class="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">{title}</h2>
+    <p class="text-sm text-base-content/75 line-clamp-4">{description}</p>
   </div>
 </a>

@@ -23,15 +23,22 @@ const {
     <!-- Prevent flash of wrong theme (FOWT) -->
     <script is:inline>
       (function() {
-        const saved = localStorage.getItem('theme');
         const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', saved || preferred);
+        let theme = preferred;
+        try {
+          const saved = localStorage.getItem('theme');
+          if (saved === 'light' || saved === 'dark') theme = saved;
+        } catch {
+          // Respect the system preference when storage is unavailable.
+        }
+        document.documentElement.setAttribute('data-theme', theme);
       })();
     </script>
   </head>
   <body class="min-h-screen flex flex-col bg-base-100 text-base-content">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <Navbar activeItemID={activeItemID} />
-    <main class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main id="main-content" tabindex="-1" class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <slot />
     </main>
     <Footer />
@@ -40,10 +47,36 @@ const {
 </html>
 
 <script>
-  // Re-apply theme after View Transitions swap
-  document.addEventListener('astro:after-swap', () => {
-    const saved = localStorage.getItem('theme');
-    const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', saved || preferred);
+  // Preserve the selected theme through navigation, including when storage is blocked.
+  document.addEventListener('astro:before-swap', (event) => {
+    if ('newDocument' in event) {
+      const nextDocument = event.newDocument as Document;
+      nextDocument.documentElement.setAttribute(
+        'data-theme',
+        document.documentElement.getAttribute('data-theme') || 'light',
+      );
+    }
   });
 </script>
+
+<style>
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 100;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    color: oklch(var(--pc));
+    background: oklch(var(--p));
+    transform: translateY(calc(-100% - 1rem));
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  #main-content {
+    scroll-margin-top: 5rem;
+  }
+</style>

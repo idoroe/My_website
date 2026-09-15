@@ -1,52 +1,38 @@
 ---
 import { getCollection } from "astro:content";
 import createSlug from "../../lib/createSlug";
-
-const projects = await getCollection("projects");
-const featured = projects
-  .filter((p) => p.data.featured)
-  .sort((a, b) => a.data.sortOrder - b.data.sortOrder)
-  .slice(0, 3);
+import { PROJECT_SUMMARIES } from "../../data/profile";
+const featured = (await getCollection("projects"))
+  .filter(project => project.data.featured)
+  .sort((a, b) => a.data.sortOrder - b.data.sortOrder);
 ---
-
-<section class="py-12 animate-on-scroll">
-  <div class="flex items-center justify-between mb-6">
-    <h2 class="text-2xl font-bold">Featured Projects</h2>
-    <a href="/projects" class="text-primary hover:underline text-sm font-medium">
-      View all &rarr;
-    </a>
+<section class="section-block" aria-labelledby="featured-title">
+  <div class="section-heading">
+    <div><p class="eyebrow">Selected personal projects</p><h2 id="featured-title">Built to be explored.</h2></div>
+    <a href="/projects" class="section-link">All case studies ↗</a>
   </div>
-
-  {featured.length === 0 ? (
-    <p class="text-base-content/60">No featured projects yet. Add <code>featured: true</code> to your project frontmatter.</p>
-  ) : (
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {featured.map((project) => (
-        <a
-          href={`/projects/${createSlug(project.data.title, project.slug)}`}
-          class="card bg-base-200 glow-card gradient-border overflow-hidden group"
-        >
-          {project.data.heroImage && (
-            <figure class="h-44 overflow-hidden">
-              <img
-                src={project.data.heroImage}
-                alt={project.data.title}
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                loading="lazy"
-              />
-            </figure>
-          )}
-          <div class="p-5">
-            <div class="flex flex-wrap gap-1.5 mb-2">
-              {project.data.tags.slice(0, 3).map((tag) => (
-                <span class="badge badge-sm badge-outline badge-primary">{tag}</span>
-              ))}
-            </div>
-            <h3 class="font-semibold text-lg mb-1">{project.data.title}</h3>
-            <p class="text-sm text-base-content/60 line-clamp-2">{project.data.description}</p>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    {featured.map(project => {
+      const summary = PROJECT_SUMMARIES.find(item => item.name === project.data.title);
+      return (
+        <a href={`/projects/${createSlug(project.data.title, project.slug)}`} class="featured-card group">
+          {project.data.heroImage && <img src={project.data.heroImage} alt={`${project.data.title} application overview`} width="640" height="360" class="aspect-video w-full object-cover border-b border-base-300" loading="lazy" />}
+          <div class="p-5 flex flex-col flex-1">
+            <p class="eyebrow mb-2">{project.data.category}</p>
+            <h3 class="text-xl font-semibold tracking-tight">{project.data.title} <span class="text-primary float-right" aria-hidden="true">↗</span></h3>
+            <p class="text-sm text-base-content/75 mt-2 mb-5">{summary?.subtitle}</p>
+            <ul class="flex flex-wrap gap-1.5 mb-6">{project.data.tags.slice(0, 3).map(tag => <li class="skill-chip">{tag}</li>)}</ul>
+            {summary && <div class="project-metric"><strong>{summary.metric}</strong><span>{summary.metricLabel}</span></div>}
           </div>
         </a>
-      ))}
-    </div>
-  )}
+      );
+    })}
+  </div>
 </section>
+<style>
+  .featured-card { display: flex; flex-direction: column; overflow: hidden; border: 1px solid oklch(var(--bc) / .12); border-radius: .9rem; background: oklch(var(--b2)); transition: border-color .2s, box-shadow .2s; }
+  .featured-card:hover { border-color: oklch(var(--p) / .5); box-shadow: 0 12px 32px -20px oklch(var(--p) / .3); }
+  .project-metric { display: flex; align-items: baseline; flex-wrap: wrap; gap: .6rem; padding-top: 1rem; border-top: 1px solid oklch(var(--bc) / .12); margin-top: auto; }
+  .project-metric strong { font-size: 1.8rem; line-height: 1.2; font-weight: 600; letter-spacing: -.05em; }
+  .project-metric span { font-size: .7rem; color: oklch(var(--bc) / .75); }
+</style>

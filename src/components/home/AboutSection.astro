@@ -1,57 +1,12 @@
 ---
+import { EDUCATION } from "../../data/profile";
 ---
-
-<section class="py-12 animate-on-scroll">
-  <h2 class="text-2xl font-bold mb-6">About Me</h2>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-    <!-- Headshot -->
-    <div class="flex justify-center md:justify-start">
-      <div class="w-48 h-48 rounded-2xl bg-base-300 overflow-hidden ring-2 ring-primary/20">
-        <img
-          src="/screenshots/headshot-full.webp"
-          alt="Emmanuel Idoro"
-          class="w-full h-full object-cover"
-          style="object-position: center 20%;"
-          loading="lazy"
-        />
-      </div>
-    </div>
-
-    <!-- About text -->
-    <div class="md:col-span-2">
-      <p class="text-base-content/80 mb-4">
-        I'm a 4th-year Software Engineering student at the University of Calgary's Schulich School of
-        Engineering (graduating 2028), joining RBC Borealis as a Data Engineering Intern on the Enterprise
-        Data Hub team in May 2026.
-      </p>
-      <p class="text-base-content/80 mb-4">
-        My work sits at the intersection of data engineering and software development &mdash;
-        I've built ML pipelines that flag banking anomalies, annotation platforms
-        informed by my time training AI models, and production infrastructure
-        with self-healing monitoring.
-      </p>
-      <p class="text-base-content/70 mb-4 text-sm italic">
-        I care about building systems that are not just functional, but observable,
-        testable, and ready for real users.
-      </p>
-      <ul class="space-y-2">
-        <li class="flex items-start gap-2">
-          <span class="text-primary mt-1">&#9679;</span>
-          <span class="text-base-content/70">Built FinSight: end-to-end anomaly detection pipeline with Python, FastAPI, DuckDB, dbt, and explainable AI</span>
-        </li>
-        <li class="flex items-start gap-2">
-          <span class="text-primary mt-1">&#9679;</span>
-          <span class="text-base-content/70">Built LabelForge: multi-user annotation platform with Django REST Framework, JWT auth, role-based workflows, and a quality dashboard — inspired by AI training at Mindrift</span>
-        </li>
-        <li class="flex items-start gap-2">
-          <span class="text-primary mt-1">&#9679;</span>
-          <span class="text-base-content/70">Built PipelineX: production CI/CD, monitoring, and self-healing infrastructure with Prometheus & Grafana</span>
-        </li>
-        <li class="flex items-start gap-2">
-          <span class="text-primary mt-1">&#9679;</span>
-          <span class="text-base-content/70">Interned at Learn Easy Academy — improved page load by 44% and cut p95 query time from 480ms to 160ms</span>
-        </li>
-      </ul>
-    </div>
+<section class="section-block about-section" aria-labelledby="about-title">
+  <div><p class="eyebrow">A little about me</p><h2 id="about-title">Curious about the whole system.</h2><p class="about-location">Calgary, Canada<br />{EDUCATION.university}<br />Expected graduation: {EDUCATION.graduation}</p></div>
+  <div class="space-y-4 text-base-content/80 leading-relaxed">
+    <p>I’m studying Software Engineering at the University of Calgary’s Schulich School of Engineering. At RBC, my internship brings together data validation, automation, and secure access to enterprise data.</p>
+    <p>My experience training AI models at Mindrift AI and Outlier AI has also shaped how I build software: make the rules explicit, test the edge cases, and give people useful feedback.</p>
+    <p>That thinking runs through my personal projects: FinSight turns synthetic transaction data into anomaly scores with review context; LabelForge supports annotation and review; PipelineX adds delivery checks and observability to FinSight.</p>
+    <a href="/references" class="inline-block text-primary font-medium hover:underline">Meet my academic reference ↗</a>
   </div>
 </section>

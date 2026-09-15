@@ -1,58 +1,16 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { PERSON_NAME } from "../config";
+import { PERSON_NAME, SOCIAL_LINKS, PERSON_PHONE, PERSON_LOCATION } from "../config";
+import { EDUCATION, EXPERIENCE, SKILLS, PROJECT_SUMMARIES, RESUME_URL, RESUME_FILENAME } from "../data/profile";
 ---
-
-<BaseLayout title="Resume" activeItemID="resume">
-  <div class="py-4">
-    <div class="flex items-center justify-between mb-6">
-      <h1 class="text-3xl font-bold"><span class="gradient-text">Resume</span></h1>
-      <a
-        href="/resume.pdf"
-        download
-        class="btn btn-gradient btn-sm gap-2"
-      >
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-        Download PDF
-      </a>
-    </div>
-
-    <!-- PDF Viewer -->
-    <div class="rounded-xl overflow-hidden border border-base-300 mb-8">
-      <iframe
-        src="/resume.pdf"
-        class="w-full h-[80vh]"
-        title="Resume PDF"
-      ></iframe>
-    </div>
-
-    <!-- SEO Text Version -->
-    <section class="prose max-w-none">
-      <h2>About {PERSON_NAME}</h2>
-      <p>
-        4th-year Software Engineering student at the University of Calgary's Schulich School of Engineering
-        (graduating June 2028) with hands-on experience in data engineering, full-stack development, AI model training,
-        and production infrastructure. Incoming Data Engineering Intern at RBC Borealis on the Enterprise Data Hub team (May 2026).
-      </p>
-
-      <h3>Key Projects</h3>
-      <ul>
-        <li><strong>FinSight</strong> — End-to-end anomaly-detection pipeline that ingests 50K synthetic banking transactions, transforms them through a dbt dimensional model (staging → intermediate → marts), and scores them with an Isolation Forest via FastAPI. DuckDB star schema (fact + 3 dimension tables) with dbt-managed transformations and data quality tests. Containerized Docker Compose stack with single-command startup.</li>
-        <li><strong>PipelineX</strong> — 4-stage CI/CD pipeline (lint → tests → build → Trivy scan) that blocks merges on quality or security failures. Production Docker Compose deployment with health checks across 4 services. Prometheus (15+ metrics) and Grafana dashboards for latency, error rates, and restarts, enabling sub-5-minute incident diagnosis.</li>
-        <li><strong>LabelForge</strong> — Full-stack annotation platform with React, TypeScript, Django REST Framework, PostgreSQL, and JWT Auth. 3 role-based workflows (Annotator, Reviewer, Admin) with a task state machine enforcing valid transitions at the API level. Keyboard shortcuts enhancing usability for 15+ reviewers, reducing revision requests by 30%. Quality dashboard with per-annotator metrics filterable by project.</li>
-      </ul>
-
-      <h3>Key Qualifications</h3>
-      <ul>
-        <li>Programming languages: Python, Java, SQL, C, C++, JavaScript, TypeScript, C#</li>
-        <li>Frameworks & Libraries: React, Django, FastAPI, Flask, REST APIs, scikit-learn</li>
-        <li>Tools & Technologies: AWS, Docker, Docker Compose, dbt, DuckDB, Git, GitHub Actions, Prometheus, Grafana, Trivy, WebSockets</li>
-        <li>Performance engineering: cut page loads by 44%, reduced p95 query times by 67% at Learn Easy Academy</li>
-        <li>AI model training: write 50 Java/OOP prompts weekly at Mindrift AI, improving eval accuracy ~20%; created JS/React training sets at Outlier AI raising accuracy by 20%</li>
-        <li>Strong foundation in data structures, algorithms, OOP (Java), and software design (C++)</li>
-      </ul>
-    </section>
-  </div>
+<BaseLayout title="Resume" description="View or download Emmanuel Idoro’s resume: RBC Data Engineer Intern, AI model training experience, and Software Engineering projects." activeItemID="resume">
+  <header class="page-heading no-print"><p class="eyebrow">Experience, in one place</p><h1>Resume<span class="text-primary">.</span></h1><p>Data engineering, software development, and AI model evaluation.</p><div class="flex flex-wrap gap-3 mt-6"><a href={RESUME_URL} download={RESUME_FILENAME} class="btn btn-gradient">Download PDF ↓</a><a href={RESUME_URL} target="_blank" rel="noopener noreferrer" class="btn btn-outline">Open PDF ↗</a><a href="#resume-text" class="btn btn-ghost">Read on this page</a></div></header>
+  <details class="resume-preview no-print"><summary>Preview the PDF <span class="text-sm font-normal text-base-content/70">Expand viewer</span></summary><p class="px-5 pb-4 text-sm text-base-content/75">If your browser cannot display the preview, <a href={RESUME_URL} class="text-primary underline" target="_blank" rel="noopener noreferrer">open the PDF</a> or read the complete text below.</p><iframe src={RESUME_URL} title="Emmanuel Idoro resume PDF" class="w-full h-[80vh] bg-white" loading="lazy"></iframe></details>
+  <article id="resume-text" class="resume-text">
+    <header class="resume-identity"><h2>{PERSON_NAME}</h2><p>{PERSON_LOCATION} · <a href={`mailto:${SOCIAL_LINKS.email}`}>{SOCIAL_LINKS.email}</a> · <a href={`tel:+1${PERSON_PHONE.replace(/\D/g, '')}`}>{PERSON_PHONE}</a></p><div class="flex gap-4 mt-3"><a href={SOCIAL_LINKS.github}>GitHub ↗</a><a href={SOCIAL_LINKS.linkedin}>LinkedIn ↗</a><a href="/references">References ↗</a></div></header>
+    <section><h3>Education</h3><h4>{EDUCATION.degree}</h4><p>{EDUCATION.university}, {EDUCATION.school}</p><p>{EDUCATION.dates} · Expected graduation: {EDUCATION.graduation}</p><p class="mt-2">Relevant coursework: {EDUCATION.coursework.join(', ')}.</p></section>
+    <section><h3>Skills</h3><div class="space-y-3">{SKILLS.map(category => <p><strong>{category.label}:</strong> {category.items.join(', ')}</p>)}</div></section>
+    <section><h3>Professional experience</h3>{EXPERIENCE.map(job => <div class="resume-job"><div class="resume-job-heading"><h4>{job.company}</h4><span>{job.dates} · {job.location}</span></div><p class="font-medium">{job.role}</p>{job.note && <p class="text-sm mt-1">{job.note}</p>}<ul>{job.bullets.map(bullet => <li>{bullet}</li>)}</ul></div>)}</section>
+    <section><h3>Personal projects</h3>{PROJECT_SUMMARIES.map(project => <div class="resume-job"><h4><a href={project.href}>{project.name} ↗</a> — {project.subtitle}</h4><p class="text-sm mt-1">{project.stack}</p><ul>{project.bullets.map(bullet => <li>{bullet}</li>)}</ul></div>)}</section>
+  </article>
 </BaseLayout>

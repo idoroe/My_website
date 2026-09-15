@@ -18,7 +18,8 @@ interface Props {
 
 const { entry } = Astro.props;
 const post: BlogSchema = entry.data;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
+const readingMinutes = Math.max(1, Math.ceil(entry.body.trim().split(/\s+/).length / 220));
 ---
 
 <PostLayout
@@ -29,6 +30,8 @@ const { Content } = await entry.render();
   updatedDate={post.updatedDate}
   badge={post.badge}
   tags={post.tags}
+  headings={headings}
+  readingMinutes={readingMinutes}
 >
   <Content />
 </PostLayout>

@@ -6,53 +6,77 @@ interface Props {
 const { categories } = Astro.props;
 ---
 
-<div class="flex flex-wrap gap-2 mb-8">
-  <button
-    class="filter-btn btn btn-sm btn-primary"
-    data-filter="all"
-  >
-    All
-  </button>
-  {categories.map((cat) => (
+<div id="project-filter" class="hidden mb-8">
+  <div class="flex flex-wrap gap-2" role="group" aria-label="Filter projects by category">
     <button
-      class="filter-btn btn btn-sm btn-ghost"
-      data-filter={cat}
+      type="button"
+      class="filter-btn btn btn-sm btn-primary"
+      data-filter="all"
+      aria-pressed="true"
     >
-      {cat}
+      All projects
     </button>
-  ))}
+    {categories.map((cat) => (
+      <button
+        type="button"
+        class="filter-btn btn btn-sm btn-ghost"
+        data-filter={cat}
+        aria-pressed="false"
+      >
+        {cat}
+      </button>
+    ))}
+  </div>
+  <p id="project-filter-status" class="mt-3 text-sm text-base-content/70" role="status" aria-live="polite" aria-atomic="true"></p>
 </div>
 
 <script>
+  let filterController: AbortController | undefined;
+
   function initProjectFilter() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const projectCards = document.querySelectorAll('[data-category]');
+    filterController?.abort();
+    const filterGroup = document.getElementById('project-filter');
+    if (!filterGroup) return;
+
+    filterController = new AbortController();
+    const { signal } = filterController;
+    const filterBtns = filterGroup.querySelectorAll<HTMLButtonElement>('.filter-btn');
+    const projectCards = document.querySelectorAll<HTMLElement>('[data-category]');
+    const status = document.getElementById('project-filter-status');
+    filterGroup.classList.remove('hidden');
+
+    function applyFilter(filter: string) {
+      filterBtns.forEach((button) => {
+        const active = button.dataset.filter === filter;
+        button.classList.toggle('btn-primary', active);
+        button.classList.toggle('btn-ghost', !active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+
+      let count = 0;
+      projectCards.forEach((card) => {
+        const matches = filter === 'all' || card.dataset.category === filter;
+        card.hidden = !matches;
+        card.style.display = matches ? '' : 'none';
+        if (matches) count++;
+      });
+
+      if (status) {
+        status.textContent = `Showing ${count} of ${projectCards.length} projects${filter === 'all' ? '.' : ` in ${filter}.`}`;
+      }
+    }
 
     filterBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
-        const filter = btn.getAttribute('data-filter');
-
-        // Update active button styles
-        filterBtns.forEach((b) => {
-          b.classList.remove('btn-primary');
-          b.classList.add('btn-ghost');
-        });
-        btn.classList.remove('btn-ghost');
-        btn.classList.add('btn-primary');
-
-        // Filter cards
-        projectCards.forEach((card) => {
-          const el = card as HTMLElement;
-          if (filter === 'all' || el.dataset.category === filter) {
-            el.style.display = '';
-          } else {
-            el.style.display = 'none';
-          }
-        });
-      });
+        applyFilter(btn.dataset.filter || 'all');
+      }, { signal });
     });
+
+    const activeButton = filterGroup.querySelector<HTMLButtonElement>('[aria-pressed="true"]');
+    applyFilter(activeButton?.dataset.filter || 'all');
   }
 
   initProjectFilter();
-  document.addEventListener('astro:after-swap', initProjectFilter);
+  document.addEventListener('astro:page-load', initProjectFilter);
+  document.addEventListener('astro:before-swap', () => filterController?.abort());
 </script>

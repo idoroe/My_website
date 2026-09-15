@@ -1,58 +1,55 @@
 ---
 title: "FinSight"
-description: "An end-to-end data pipeline that transforms raw banking transactions through a dimensional model, detects anomalies using machine learning, and explains each flag with human-readable reasons."
+description: "An anomaly-detection pipeline for 50,000 synthetic banking transactions, combining a dbt dimensional model, Isolation Forest scoring, and a React dashboard with readable explanations."
 heroImage: "/screenshots/finsight-hero.webp"
 tags: ["Python", "FastAPI", "DuckDB", "dbt", "scikit-learn", "React", "Docker"]
 category: "ML"
 featured: true
 sortOrder: 1
-problem: "Before starting my data engineering internship at RBC Borealis, I wanted to deeply understand what a production-grade financial data pipeline looks like — not just the ML model, but the entire journey from raw data to actionable insights."
-role: "Data Engineer / ML Engineer"
+problem: "An anomaly score needs trustworthy input data and enough context for someone to investigate it. I built FinSight to connect data modeling, quality checks, model serving, and an interface for reviewing unusual transactions."
+role: "Data engineering and ML development · Personal project"
 techStack: ["Python", "FastAPI", "DuckDB", "dbt", "scikit-learn", "React", "Docker", "Isolation Forest"]
-architecture: "An end-to-end anomaly-detection pipeline that ingests 50K synthetic banking transactions, transforms them through a dbt dimensional model (staging → intermediate → marts), and scores them with an Isolation Forest via FastAPI. A DuckDB star schema (fact + 3 dimension tables) with dbt-managed transformations and data quality tests powers a React dashboard with anomaly explanations ranked by severity."
-challenges: "Designing a meaningful star schema that mirrors real data warehouse patterns, and building an explainability layer that generates specific, contextual reasons for each flagged transaction instead of just outputting raw anomaly scores."
-shipped: "End-to-end anomaly-detection pipeline ingesting 50K synthetic banking transactions, a DuckDB star schema (fact + 3 dimension tables) with dbt-managed transformations and data quality tests, and a containerized Docker Compose stack with single-command startup that runs data generation, dbt transforms, model training, and scoring automatically on first boot."
-impact: "Each flagged transaction shows human-readable explanations like 'this transaction is 7x this customer's average, occurred at 2 AM, and is their first international purchase' — turning opaque ML scores into actionable analyst insights."
+architecture: "50,000 synthetic banking transactions flow through dbt staging, intermediate, and mart models into a DuckDB star schema with one fact table and three dimension tables. An Isolation Forest scores transactions through FastAPI, and a React dashboard presents anomalies with explanations ranked by severity."
+challenges: "Designing a consistent dimensional model, testing the transformations that feed the model, and presenting unusual transaction features in language a reviewer can understand."
+shipped: "A complete pipeline for 50,000 synthetic transactions, a tested DuckDB dimensional model, a FastAPI scoring service, and a React dashboard. Docker Compose provides a single-command startup that runs data generation, dbt transformations, model training, and scoring on first boot."
+impact: "Makes the path from raw transaction data to a reviewable anomaly visible in one application. Severity-ranked explanations give each flag context, while the repeatable setup makes the project easy to inspect and run."
 liveUrl: ""
 githubUrl: "https://github.com/idoroe/Finsight-Lite"
 screenshots: ["/screenshots/finsight-dashboard.webp", "/screenshots/finsight-anomalies.webp", "/screenshots/finsight-transactions.webp"]
 ---
 
-## The Story
+## Project Overview
 
-Before starting my data engineering internship at RBC Borealis, I wanted to deeply understand what a production-grade financial data pipeline looks like — not just the ML model, but the entire journey from raw data to actionable insights.
+FinSight brings data engineering and machine learning together in a personal project built around 50,000 synthetic banking transactions. It covers the full path from generated data to a dashboard: transformation, quality checks, feature preparation, anomaly scoring, and an explanation a reviewer can read.
 
-FinSight ingests synthetic banking transactions, transforms them through a dimensional data model using dbt, trains an Isolation Forest to detect anomalies, and surfaces flagged transactions through an interactive dashboard. Each anomaly comes with human-readable explanations — not just "this is suspicious," but "this transaction is 7x this customer's average, occurred at 2 AM, and is their first international purchase."
+The core design question was how to make a flagged transaction useful to someone investigating it. That required a consistent data model and an interface that exposes the context behind unusual activity.
 
-The goal wasn't just to build a model. It was to build the system around the model — proper data transformations, quality tests, a serving API, and a frontend that makes the output useful to a human analyst.
+## Data Model and Transformations
 
-## Dimensional Data Model
+A DuckDB star schema places `fact_transactions` at the center, with `dim_customer`, `dim_merchant`, and `dim_time` providing context. This separates transaction events from the customer, merchant, and time attributes used in analysis.
 
-The pipeline uses a star schema with `fact_transactions` at the center and three dimension tables: `dim_customer`, `dim_merchant`, and `dim_time`. This isn't just a flat CSV dump — it's modeled the way real data warehouses work, with derived fields like customer risk tiers, merchant categories, and time features (`is_weekend`, `is_business_hours`).
+dbt organizes transformations into three layers:
 
-dbt handles the transformation pipeline across three layers: staging (clean and cast), intermediate (enrich and join), and marts (final tables ready for analytics and ML).
+- **Staging:** Clean the source records and cast fields to consistent types.
+- **Intermediate:** Join related records and prepare derived features.
+- **Marts:** Publish tables for analytics, model input, and the dashboard.
 
-## Anomaly Detection
+Data quality tests help make assumptions about the tables explicit. Keeping those transformations in dbt also makes it easier to trace where a model feature came from.
 
-An Isolation Forest model trained on transaction features including amount z-scores, transaction velocity, time-of-day patterns, and merchant novelty. The model scores every transaction with a continuous anomaly score, and a threshold flags the top ~3% as suspicious.
+## Anomaly Scoring and Review
 
-## Explainability — The Highlight
+An Isolation Forest scores transaction features such as unusual amounts, timing, and activity patterns. FastAPI exposes the results to the React frontend.
 
-Each flagged transaction gets a "top 3 reasons" breakdown:
+The dashboard pairs flagged transactions with explanations ranked by severity. For example, a transaction may have an unusually large amount compared with the customer's baseline or occur at an uncommon time. These comparisons provide investigation context; they are not a determination that a transaction is fraudulent or a formal attribution of the model's decision.
 
-- **Unusual Amount** — "$4,892 is 7.2x above this customer's average of $679"
-- **Unusual Time** — "Transaction at 2:47 AM; customer typically transacts 9AM–6PM"
-- **International Activity** — "First international transaction; no prior history"
+The interface includes a transaction feed, summary statistics, and a detail view that keeps the score and supporting context together.
 
-These aren't generic labels. They're generated by comparing each transaction's features against the customer's historical baseline, producing specific, contextual explanations a human analyst can act on.
+## Repeatable Setup
 
-## Dashboard
+Docker Compose packages the API and frontend. A single-command startup runs synthetic data generation, dbt transformations, model training, and scoring on first boot. This makes the complete workflow available for local inspection without assembling each stage by hand.
 
-The React frontend surfaces a transaction feed with anomaly highlighting, summary statistics, and a detail view for each flagged transaction. The anomaly detail page shows the score, top reasons (as horizontal severity bars), and a sparkline of the customer's recent history for context.
+## Engineering Takeaways
 
-## What I'd Add Next
+The most useful part of this project was connecting decisions across layers. A feature shown in the dashboard depends on a transformation, which depends on the meaning and quality of the source data. Clear boundaries make that chain easier to inspect and maintain.
 
-- Real-time streaming ingestion with Kafka
-- Model drift detection comparing score distributions over time
-- SHAP values for deeper feature attribution
-- Multi-model ensemble (Isolation Forest + Autoencoder)
+The dataset is synthetic and the pipeline runs in batches. A useful next iteration would evaluate detection quality against known synthetic anomalies, check that historical features avoid future-data leakage, and measure how performance changes as the data grows. Streaming ingestion and model drift monitoring are further extensions.

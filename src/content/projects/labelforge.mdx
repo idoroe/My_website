@@ -1,70 +1,63 @@
 ---
 title: "LabelForge"
-description: "A full-stack multi-user annotation platform with 3 role-based workflows, a task state machine enforcing valid transitions at the API level, customizable label buttons with keyboard shortcuts, and a quality dashboard with per-annotator metrics — built from real experience as an AI model trainer at Mindrift."
+description: "A multi-user annotation platform with three role-based workflows, API-enforced task transitions, keyboard shortcuts, and a quality dashboard. Used by 15+ reviewers, with a 30% reduction in revision requests."
 heroImage: "/screenshots/labelforge-hero.webp"
 tags: ["React", "TypeScript", "Django REST Framework", "PostgreSQL", "JWT Auth", "Docker"]
 category: "Full-Stack"
 featured: true
 sortOrder: 2
-problem: "I spent months as an AI model trainer at Mindrift AI, evaluating LLM outputs and reviewing annotations. The workflow was always the same: claim a task, annotate it, submit for review, get feedback, iterate. But the tools we used were clunky — no quality metrics, no clear rejection feedback, no way to see how the team was performing."
-role: "Full-Stack Developer"
+problem: "Annotation work needs a clear path from claiming a task to receiving review feedback. My AI model training and contributor review experience inspired a platform that keeps task ownership, review decisions, and quality metrics connected."
+role: "Full-stack development · Personal project"
 techStack: ["React", "TypeScript", "Django REST Framework", "PostgreSQL", "JWT Auth", "Docker"]
-architecture: "React + TypeScript frontend communicates with a Django REST Framework backend backed by PostgreSQL and secured with JWT authentication. Three role-based workflows (Annotator, Reviewer, Admin) are enforced at the API level, with a task state machine governing valid transitions (unclaimed → in-progress → submitted → approved/rejected)."
-challenges: "Designing a task state machine that enforces valid transitions at the API level while supporting three distinct role-based workflows, and building a quality dashboard with per-annotator metrics that gives project managers real visibility into annotation accuracy and throughput."
-shipped: "Full-stack annotation platform with 3 role-based workflows (Annotator, Reviewer, Admin) and a task state machine enforcing valid transitions at the API level. Customizable label buttons and keyboard shortcuts enhancing usability for 15+ reviewers, leading to a 30% decrease in revision requests. Quality dashboard with per-annotator metrics (rejection rate, avg time, throughput), daily approval charts, and label-distribution breakdowns filterable by project."
-impact: "Customizable label buttons and keyboard shortcuts enhanced usability for 15+ reviewers, leading to a 30% decrease in revision requests. The quality dashboard gives project managers instant visibility into per-annotator performance, rejection rates, and throughput."
+architecture: "A React and TypeScript frontend connects to a Django REST Framework API backed by PostgreSQL. JWT authentication identifies users, role-based permissions control access, and a task state machine enforces valid transitions for annotators, reviewers, and admins."
+challenges: "Keeping permissions and task transitions consistent at the API boundary while giving each role a focused interface and making review feedback easy to act on."
+shipped: "Three role-based workflows, a task state machine, customizable label buttons, and keyboard shortcuts. A quality dashboard adds per-annotator rejection rate, average task time, throughput, daily approvals, and label distributions, filterable by project."
+impact: "Customizable label buttons and keyboard shortcuts improved usability for 15+ reviewers and reduced revision requests by 30%. The quality dashboard makes progress and review outcomes visible at both the project and annotator level."
 liveUrl: ""
 githubUrl: "https://github.com/idoroe/LabelForge"
-screenshots: ["/screenshots/labelforge-annotate.webp", "/screenshots/labelforge-quality.webp", "/screenshots/labelforge-review.webp", "/screenshots/labelforge-admin.webp"]
+screenshots: ["/screenshots/labelforge-annotate.webp", "/screenshots/labelforge-hero.webp"]
 ---
 
-## The Story
+## Project Overview
 
-I spent months as an AI model trainer at Mindrift AI, evaluating LLM outputs and reviewing annotations across datasets. The workflow was always the same: claim a task, annotate it, submit for review, get feedback, iterate. But the tools we used were clunky — no quality metrics, no clear rejection feedback, no way to see how the team was performing.
+My work in AI model training involves writing challenging programming prompts, correcting model answers, and reviewing contributor tasks. That experience shaped LabelForge: a personal project focused on clear annotation workflows and useful feedback.
 
-LabelForge is the platform I wished existed. It's a full-stack annotation platform built with React, TypeScript, Django REST Framework, and PostgreSQL that supports three role-based workflows (Annotator, Reviewer, Admin) with JWT-secured API access. The dashboard tracks rejection rates, throughput, and per-annotator performance in real time.
+The application combines React, TypeScript, Django REST Framework, and PostgreSQL. Three roles share one task lifecycle, with the API responsible for checking both permissions and valid state changes.
 
-This isn't a theoretical exercise — it's built from real experience with real annotation workflows.
+## Task Lifecycle
 
-## Task State Machine
+The state machine describes the path a task can take:
 
-The core of LabelForge is a state machine that governs every task's lifecycle at the API level:
-
-```
+```text
 unclaimed → in-progress → submitted → approved
-                                    ↘ rejected → in-progress (back to annotator)
+                                    ↘ rejected → in-progress
 ```
 
-You can't approve an unclaimed task. You can't submit a task you haven't claimed. You can't reject a task that's already approved. Every invalid transition returns a clear error — no silent data corruption. The Django REST Framework serializers and viewsets enforce these rules consistently across all endpoints.
+A task must be claimed before it can be submitted, and review actions apply to submitted work. Keeping these checks in the API makes the workflow consistent across interface actions and direct requests.
 
-## Three Roles, Three Different Experiences
+## Three Focused Workflows
 
-**Annotators** see their personal task queue. They can claim unclaimed tasks, annotate them using customizable label buttons (with keyboard shortcuts for speed), and submit. If a task was previously rejected, the reviewer's feedback appears prominently so the annotator knows exactly what to fix.
+**Annotators** claim tasks, select labels, and submit work. Customizable label buttons and keyboard shortcuts support repeated actions. When a task returns for revision, the review feedback stays with it.
 
-**Reviewers** see a queue of submitted tasks. For each one, they see the original text and the annotator's chosen label. One click to approve. Reject requires a comment explaining why. Keyboard shortcuts let reviewers approve, reject, and navigate without touching the mouse — enhancing usability for 15+ reviewers and leading to a 30% decrease in revision requests.
+**Reviewers** inspect submitted work and approve it or return it with an explanation. Clear feedback gives the annotator something specific to address on the next submission.
 
-**Admins** create projects, upload task datasets in bulk, and see the quality dashboard. They manage the system, not individual tasks.
+**Admins** manage projects and datasets, then use the dashboard to follow progress and quality trends.
 
-JWT authentication secures every API endpoint, and Django's permission system enforces role boundaries. An annotator can't hit the review endpoint even if they construct the request manually.
-
-## Annotation Interface
-
-The annotation UI displays the text to be labeled, customizable label buttons defined per project, and keyboard shortcuts for fast annotation. A built-in timer tracks time spent per task. If a task was previously rejected, the reviewer's feedback is displayed prominently so the annotator knows exactly what to fix.
+JWT authentication and role-based permissions serve different purposes: authentication establishes who is making a request; permissions determine which actions that user may perform.
 
 ## Quality Dashboard
 
-The dashboard is filterable by project and tracks:
+The dashboard can be filtered by project and includes:
 
-- **Per-annotator metrics** — rejection rate, average time per task, throughput
-- **Daily approval charts** — visualize team velocity over time
-- **Label-distribution breakdowns** — donut chart showing annotation distribution
-- **Completion rate** and overall rejection rate
+- Per-annotator rejection rate, average time per task, and throughput.
+- Daily approval charts to show progress over time.
+- Label-distribution breakdowns to reveal how categories are being used.
+- Completion and rejection rates across a project.
 
-This gives project managers instant visibility into data quality and annotator performance — something most annotation tools handle poorly.
+These measures support investigation. A change in rejection rate can prompt a review of guidelines, task difficulty, or feedback; the number alone does not explain the cause.
 
-## What I'd Add Next
+## Results and Next Steps
 
-- Named Entity Recognition (NER) annotation with text highlighting
-- Inter-annotator agreement scoring (Cohen's Kappa)
-- CSV/JSON export of completed annotations with quality metadata
-- Real-time WebSocket notifications for task status changes
+The annotation interface improved usability for 15+ reviewers and reduced revision requests by 30%. Connecting those interactions to the task state machine and quality dashboard made the review cycle easier to follow.
+
+Further work could add text-span annotation, inter-annotator agreement measures, and exports that retain review metadata. I would also expand testing around simultaneous task claims and permission boundaries as the number of users grows.

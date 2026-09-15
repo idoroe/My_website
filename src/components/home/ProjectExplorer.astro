@@ -1,0 +1,225 @@
+---
+import { PROJECT_SUMMARIES } from '../../data/profile';
+
+interface Architecture {
+  purpose: string;
+  stages: { label: string; technology: string; description: string }[];
+  decision: string;
+}
+
+const architecture: Record<string, Architecture> = {
+  FinSight: {
+    purpose: 'From synthetic transactions to anomalies a reviewer can investigate.',
+    stages: [
+      { label: 'Generate', technology: '50K synthetic transactions', description: 'Create banking data for a repeatable local pipeline.' },
+      { label: 'Transform', technology: 'dbt + DuckDB', description: 'Build a tested star schema through staging, intermediate, and mart models.' },
+      { label: 'Score', technology: 'Isolation Forest + FastAPI', description: 'Score transaction features and expose anomalies through the API.' },
+      { label: 'Investigate', technology: 'React dashboard', description: 'Review severity-ranked flags alongside their transaction context.' },
+    ],
+    decision: 'Keep transformations in dbt so the path from source fields to model features stays inspectable.',
+  },
+  PipelineX: {
+    purpose: 'From a code change to a running, observable FinSight stack.',
+    stages: [
+      { label: 'Check changes', technology: 'GitHub Actions + Trivy', description: 'Lint, test, build, then scan images with required quality and security checks.' },
+      { label: 'Run services', technology: 'Docker Compose', description: 'Use health checks to report the condition of four services.' },
+      { label: 'Collect signals', technology: 'Prometheus', description: 'Track 15+ metrics covering latency, errors, and restarts.' },
+      { label: 'Diagnose', technology: 'Grafana', description: 'Use provisioned dashboards to investigate application and service health.' },
+    ],
+    decision: 'Distinguish an unhealthy container from an exited process: health checks report status; restart policies respond to exits.',
+  },
+  LabelForge: {
+    purpose: 'From task ownership to reviewed annotations and visible quality trends.',
+    stages: [
+      { label: 'Identify', technology: 'JWT + role permissions', description: 'Authenticate users and apply Annotator, Reviewer, or Admin permissions.' },
+      { label: 'Annotate', technology: 'React + TypeScript', description: 'Claim tasks, choose labels, and submit work with keyboard shortcuts.' },
+      { label: 'Validate', technology: 'Django REST + PostgreSQL', description: 'Persist work and enforce valid task transitions at the API.' },
+      { label: 'Review', technology: 'Quality dashboard', description: 'Follow approvals, rejection rates, task time, and throughput.' },
+    ],
+    decision: 'Enforce task state changes in the API so direct requests follow the same workflow rules as the interface.',
+  },
+};
+
+const systems = PROJECT_SUMMARIES
+  .filter((project) => project.name in architecture)
+  .map((project) => ({ ...project, ...architecture[project.name], id: project.name.toLowerCase() }));
+---
+
+<section class="section-block" aria-labelledby="project-explorer-heading" data-project-explorer>
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Under the hood</p>
+      <h2 id="project-explorer-heading">See how the systems fit together.</h2>
+    </div>
+    <span class="explorer-caption">Three projects. Four steps each.</span>
+  </div>
+
+  <div class="explorer-shell">
+    <div class="explorer-tabs" role="tablist" aria-label="Project architecture" data-explorer-tabs hidden>
+      {systems.map((system, index) => (
+        <button
+          type="button"
+          id={`explorer-tab-${system.id}`}
+          class="explorer-tab"
+          role="tab"
+          aria-controls={`explorer-panel-${system.id}`}
+          aria-selected={index === 0 ? 'true' : 'false'}
+          tabindex={index === 0 ? 0 : -1}
+        >
+          <span class="tab-index" aria-hidden="true">0{index + 1}</span>
+          {system.name}
+        </button>
+      ))}
+    </div>
+
+    {systems.map((system) => (
+      <div
+        id={`explorer-panel-${system.id}`}
+        class="system-panel"
+        role="region"
+        aria-labelledby={`explorer-heading-${system.id}`}
+        data-explorer-panel
+      >
+        <header class="system-heading">
+          <div>
+            <h3 id={`explorer-heading-${system.id}`}>{system.name}</h3>
+            <p>{system.purpose}</p>
+          </div>
+          <span class="system-context">Personal project</span>
+        </header>
+
+        <ol class="system-stages" role="list" aria-label={`${system.name} architecture in four steps`}>
+          {system.stages.map((stage, index) => (
+            <li class="system-stage">
+              <span class="stage-number" aria-hidden="true">0{index + 1}</span>
+              <div class="stage-copy">
+                <h4>{stage.label}</h4>
+                <p class="stage-technology">{stage.technology}</p>
+                <p class="stage-description">{stage.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div class="system-decision">
+          <div>
+            <h4>Engineering decision</h4>
+            <p>{system.decision}</p>
+          </div>
+          <a class="section-link" href={system.href}>
+            Explore {system.name} <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  let explorerController: AbortController | undefined;
+
+  function initProjectExplorer() {
+    explorerController?.abort();
+    const explorer = document.querySelector<HTMLElement>('[data-project-explorer]');
+    if (!explorer) return;
+
+    explorerController = new AbortController();
+    const { signal } = explorerController;
+    const tablist = explorer.querySelector<HTMLElement>('[data-explorer-tabs]');
+    const tabs = [...explorer.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...explorer.querySelectorAll<HTMLElement>('[data-explorer-panel]')];
+    if (!tablist || tabs.length !== panels.length || tabs.length === 0) return;
+
+    function selectTab(index: number, moveFocus = false) {
+      tabs.forEach((tab, tabIndex) => {
+        const selected = index === tabIndex;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+        panels[tabIndex].hidden = !selected;
+      });
+      if (moveFocus) tabs[index].focus();
+    }
+
+    panels.forEach((panel, index) => {
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', tabs[index].id);
+      panel.tabIndex = 0;
+    });
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectTab(index), { signal });
+      tab.addEventListener('keydown', (event) => {
+        let nextIndex: number;
+        switch (event.key) {
+          case 'ArrowRight': nextIndex = (index + 1) % tabs.length; break;
+          case 'ArrowLeft': nextIndex = (index - 1 + tabs.length) % tabs.length; break;
+          case 'Home': nextIndex = 0; break;
+          case 'End': nextIndex = tabs.length - 1; break;
+          default: return;
+        }
+        event.preventDefault();
+        selectTab(nextIndex, true);
+      }, { signal });
+    });
+
+    const selectedIndex = tabs.findIndex((tab) => tab.getAttribute('aria-selected') === 'true');
+    selectTab(Math.max(0, selectedIndex));
+    tablist.hidden = false;
+  }
+
+  initProjectExplorer();
+  document.addEventListener('astro:page-load', initProjectExplorer);
+  document.addEventListener('astro:before-swap', () => explorerController?.abort());
+</script>
+
+<style>
+  .explorer-caption { color: oklch(var(--bc) / .7); font-size: .75rem; }
+  .explorer-shell { border: 1px solid oklch(var(--bc) / .14); border-radius: 1.1rem; background: oklch(var(--b2) / .5); }
+  .explorer-tabs { display: flex; gap: .3rem; padding: .65rem; border-bottom: 1px solid oklch(var(--bc) / .1); }
+  .explorer-tab { display: flex; align-items: center; justify-content: center; gap: .65rem; flex: 1; min-height: 2.8rem; padding: .65rem 1rem; border: 1px solid transparent; border-radius: .6rem; font-weight: 600; font-size: .85rem; color: oklch(var(--bc) / .7); transition: background-color .15s ease, color .15s ease; }
+  .explorer-tab:hover { background: oklch(var(--bc) / .04); color: oklch(var(--bc)); }
+  .explorer-tab[aria-selected="true"] { border-color: oklch(var(--p) / .2); background: oklch(var(--p) / .08); color: oklch(var(--p)); }
+  .tab-index { font-family: ui-monospace, monospace; font-size: .65rem; font-weight: 400; }
+  .system-panel { padding: 2rem; border-radius: 0 0 1.1rem 1.1rem; }
+  .system-panel + .system-panel { border-top: 1px solid oklch(var(--bc) / .1); }
+  .system-panel[role="tabpanel"] { border-top: 0; }
+  .system-heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; margin-bottom: 2.2rem; }
+  .system-heading h3 { font-size: 1.15rem; font-weight: 600; letter-spacing: -.025em; }
+  .system-heading p { max-width: 38rem; margin-top: .4rem; color: oklch(var(--bc) / .75); font-size: .85rem; line-height: 1.7; }
+  .system-context { padding-top: .25rem; color: oklch(var(--bc) / .65); font-size: .68rem; white-space: nowrap; }
+  .system-stages { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; list-style: none; padding: 0; }
+  .system-stage { position: relative; min-width: 0; }
+  .system-stage:not(:last-child)::after { content: ''; position: absolute; top: 1rem; left: 3rem; width: calc(100% - 2.4rem); border-top: 1px solid oklch(var(--p) / .25); }
+  .stage-number { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border: 1px solid oklch(var(--p) / .3); border-radius: .5rem; color: oklch(var(--p)); font-size: .7rem; font-family: ui-monospace, monospace; }
+  .stage-copy { margin-top: 1rem; }
+  .stage-copy h4 { font-size: .95rem; font-weight: 600; letter-spacing: -.02em; }
+  .stage-technology { margin-top: .45rem; color: oklch(var(--p)); font-size: .7rem; font-weight: 500; line-height: 1.6; }
+  .stage-description { margin-top: .65rem; color: oklch(var(--bc) / .75); font-size: .8rem; line-height: 1.8; }
+  .system-decision { display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid oklch(var(--bc) / .12); }
+  .system-decision h4 { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: oklch(var(--p)); }
+  .system-decision p { max-width: 42rem; margin-top: .5rem; color: oklch(var(--bc) / .78); font-size: .8rem; line-height: 1.8; }
+  .system-decision a { flex-shrink: 0; }
+  @media (max-width: 900px) {
+    .system-stages { grid-template-columns: 1fr 1fr; gap: 1.8rem; }
+    .system-stage:not(:last-child)::after { display: none; }
+    .system-stage { display: grid; grid-template-columns: 2rem 1fr; gap: 1rem; }
+    .stage-copy { margin-top: .1rem; }
+    .system-decision { align-items: start; flex-direction: column; gap: 1rem; }
+  }
+  @media (max-width: 540px) {
+    .explorer-tab { padding: .7rem .5rem; font-size: .78rem; }
+    .tab-index { display: none; }
+    .system-panel { padding: 1.3rem; }
+    .system-heading { flex-direction: column; gap: .5rem; margin-bottom: 1.5rem; }
+    .system-stages { grid-template-columns: 1fr; gap: 1.5rem; }
+    .stage-description { margin-top: .35rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .explorer-tab { transition: none; }
+  }
+  @media print {
+    .explorer-tabs { display: none !important; }
+    .system-panel[hidden] { display: block !important; }
+    .system-panel { break-inside: avoid; }
+  }
+</style>

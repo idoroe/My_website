@@ -11,12 +11,9 @@ const projects = (await getCollection("projects")).sort(
 const categories = [...new Set(projects.map((p) => p.data.category))];
 ---
 
-<BaseLayout title="Projects" activeItemID="projects">
+<BaseLayout title="Projects" description="Explore Emmanuel Idoro’s personal projects: FinSight anomaly detection, LabelForge annotation workflows, and PipelineX observability." activeItemID="projects">
   <div class="py-4">
-    <h1 class="text-3xl font-bold mb-2"><span class="gradient-text">Projects</span></h1>
-    <p class="text-base-content/60 mb-6">
-      Three end-to-end systems — from data pipelines to production infrastructure. Click any project for the full case study.
-    </p>
+    <header class="page-heading"><p class="eyebrow">Personal projects · Public source code</p><h1>Ideas into systems<span class="text-primary">.</span></h1><p>Three connected explorations of data, workflow design, and reliability. Each case study includes the architecture, engineering decisions, and a look inside the application.</p></header>
 
     <ProjectFilter categories={categories} />
 

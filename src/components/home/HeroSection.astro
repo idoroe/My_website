@@ -1,46 +1,23 @@
 ---
-import { PERSON_NAME, PERSON_TITLE, PERSON_TAGLINE } from "../../config";
+import { PERSON_NAME, PERSON_TAGLINE } from "../../config";
+import { EDUCATION, RESUME_URL, RESUME_FILENAME } from "../../data/profile";
 ---
 
-<section class="py-16 md:py-28 relative gradient-bg-animated">
-  <!-- Animated gradient orbs -->
-  <div class="absolute -top-20 -left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none"></div>
-  <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-secondary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style="animation-delay: 1.5s;"></div>
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-accent/3 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style="animation-delay: 3s;"></div>
-
-  <div class="max-w-3xl relative">
-    <p class="text-primary font-semibold mb-3 animate-fade-in tracking-wide text-sm uppercase">Hello, I'm</p>
-    <h1 class="text-5xl md:text-7xl font-bold mb-4 animate-fade-in-up">
-      <span class="gradient-text">{PERSON_NAME}</span>
-    </h1>
-    <p class="text-xl md:text-2xl text-base-content/70 font-medium mb-3 animate-fade-in-up" style="animation-delay: 0.1s;">
-      {PERSON_TITLE}
-    </p>
-    <p class="text-lg text-base-content/50 mb-6 max-w-xl animate-fade-in-up" style="animation-delay: 0.2s;">
-      {PERSON_TAGLINE}
-    </p>
-
-    <!-- Status badges -->
-    <div class="flex flex-wrap gap-3 mb-10 animate-fade-in-up" style="animation-delay: 0.25s;">
-      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-base-200 text-sm font-medium border border-base-300">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-status-pulse"></span>
-        Incoming: Data Engineering Intern @ RBC Borealis (May 2026)
-      </span>
-      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-base-200 text-sm font-medium border border-base-300">
-        Previously: AI Model Trainer @ Mindrift AI
-      </span>
+<section class="portfolio-hero" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Software engineering · Calgary, Canada</p>
+    <h1 id="hero-title">{PERSON_NAME}<span class="hero-statement">{PERSON_TAGLINE}</span></h1>
+    <p class="hero-intro">Data Engineer Intern at <strong>Royal Bank of Canada</strong> and Software Engineering student at the <strong>University of Calgary</strong>. From Snowflake data shares to full-stack applications, I care about the details that make a system dependable.</p>
+    <div class="flex flex-wrap gap-3 mt-8">
+      <a href="/experience#rbc" class="btn btn-gradient">Explore my experience <span aria-hidden="true">↗</span></a>
+      <a href={RESUME_URL} download={RESUME_FILENAME} class="btn btn-outline border-base-content/25">Download resume <span aria-hidden="true">↓</span></a>
     </div>
-
-    <div class="flex flex-wrap gap-4 animate-fade-in-up" style="animation-delay: 0.3s;">
-      <a href="/projects" class="btn btn-gradient btn-lg">
-        View Projects
-      </a>
-      <a href="/resume" class="btn btn-outline btn-primary btn-lg">
-        Resume
-      </a>
-      <a href="/contact" class="btn btn-ghost btn-lg">
-        Contact Me
-      </a>
-    </div>
+    <div class="hero-meta"><span>B.Sc. Software Engineering</span><span>Expected {EDUCATION.graduation}</span><a href="/contact" class="text-primary hover:underline">Let’s connect ↗</a></div>
   </div>
+  <aside class="snapshot-card" aria-label="Career at a glance">
+    <div class="flex items-center justify-between"><span class="eyebrow mb-0">At a glance</span><span class="monogram" aria-hidden="true">EI<span>.</span></span></div>
+    <div class="snapshot-role"><span class="text-sm text-base-content/70">Current internship</span><h2>Data Engineer Intern</h2><p>Royal Bank of Canada (RBC)</p><span class="text-sm text-base-content/70">May – December 2026 · Calgary, AB</span></div>
+    <ul class="snapshot-list"><li><span>01</span> Snowflake & SQL validation</li><li><span>02</span> API quota automation</li><li><span>03</span> Secure access to enterprise data</li></ul>
+    <a href="/resume" class="snapshot-link">View full resume <span aria-hidden="true">↗</span></a>
+  </aside>
 </section>

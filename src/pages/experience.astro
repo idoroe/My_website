@@ -1,97 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import TimeLine from "../components/cv/TimeLine.astro";
-import SkillGroup from "../components/SkillGroup.astro";
+import { EXPERIENCE, EDUCATION, SKILLS, RESUME_URL, RESUME_FILENAME } from "../data/profile";
 ---
-
-<BaseLayout title="Experience" activeItemID="experience">
-  <div class="py-4">
-    <h1 class="text-3xl font-bold mb-8"><span class="gradient-text">Experience</span></h1>
-
-    <!-- Work Experience -->
-    <section class="mb-12 animate-on-scroll">
-      <h2 class="text-xl font-bold mb-4">Work Experience</h2>
-      <div class="time-line-container">
-        <TimeLine
-          title="Data Engineering / ML Software Engineer Intern"
-          subtitle="RBC Borealis — Enterprise Data Hub Team | Starting May 2026"
-        >
-          <ul class="list-disc list-inside space-y-1 text-base-content/70">
-            <li>Joining the Enterprise Data Hub team to build and maintain enterprise data pipelines, working with production-scale data transformation, pipeline orchestration, and ML infrastructure in a banking environment</li>
-          </ul>
-          <p class="mt-3 text-sm text-primary/80 italic">
-            Related project: <a href="/projects/finsight" class="underline hover:text-primary">FinSight</a> — built before this internship to develop a deep understanding of dimensional modeling, dbt transformations, and anomaly detection in financial data.
-          </p>
-        </TimeLine>
-        <TimeLine
-          title="AI Model Trainer"
-          subtitle="Mindrift AI | Mar 2025 – Present | Remote"
-        >
-          <ul class="list-disc list-inside space-y-1 text-base-content/70">
-            <li>Write 50 challenging Java/OOP prompts weekly (classes, inheritance, interfaces, exceptions) to stress-test AI model capabilities</li>
-            <li>Edit model answers into correct, runnable Java with brief explanations and unit tests, improving eval accuracy ~20% on similar tasks</li>
-            <li>Review 10–20 contributor tasks per week for guideline compliance (score 1–5), reducing resubmits by ~25–35% with targeted feedback</li>
-          </ul>
-          <p class="mt-3 text-sm text-primary/80 italic">
-            Related project: <a href="/projects/labelforge" class="underline hover:text-primary">LabelForge</a> — built an annotation and review platform inspired by the workflows and pain points I experienced in this role.
-          </p>
-        </TimeLine>
-        <TimeLine
-          title="AI Model Trainer"
-          subtitle="Outlier AI | Sep 2024 – Aug 2025 | Remote"
-        >
-          <ul class="list-disc list-inside space-y-1 text-base-content/70">
-            <li>Created training sets for JavaScript/React tasks that raised code-suggestion accuracy by 20% on internal tests</li>
-            <li>Partnered with Quality Managers to tighten labeling rules and edge cases, cutting rework by 30%</li>
-            <li>Analyzed evaluation mistakes and refined data/prompts, increasing solved tasks by 10%</li>
-          </ul>
-        </TimeLine>
-        <TimeLine
-          title="Software Developer Intern"
-          subtitle="Learn Easy Academy | May 2023 – Aug 2023 | Lagos, Nigeria"
-        >
-          <ul class="list-disc list-inside space-y-1 text-base-content/70">
-            <li>Maintained the tutoring site with HTML/CSS/JavaScript, improving average page load from 3.2s to 1.8s and helping more students complete bookings on mobile and desktop</li>
-            <li>Optimized database jobs and indexes to drop p95 query time from 480ms to 160ms and cut slow queries over 1 second to a small fraction of total traffic</li>
-            <li>Implemented student/tutor features end-to-end (UI + API) and resolved production bugs, lifting completed bookings by 12% over the internship period</li>
-          </ul>
-        </TimeLine>
-      </div>
-    </section>
-
-    <!-- Education -->
-    <section class="mb-12 animate-on-scroll">
-      <h2 class="text-xl font-bold mb-4">Education</h2>
-      <div class="time-line-container">
-        <TimeLine
-          title="B.Sc. Software Engineering"
-          subtitle="University of Calgary, Schulich School of Engineering | Sep 2022 – Jun 2028"
-        >
-          <ul class="list-disc list-inside space-y-1 text-base-content/70">
-            <li>4th year — Expected graduation June 2028</li>
-            <li>Relevant Coursework: Data Structures & Algorithms, Object-Oriented Programming (Java), Software Design (C++), Databases, Operating Systems, Probability & Statistics</li>
-          </ul>
-        </TimeLine>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section class="animate-on-scroll">
-      <h2 class="text-xl font-bold mb-4">Skills</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <SkillGroup
-          title="Languages"
-          skills={["Python", "Java", "SQL", "C", "C++", "JavaScript", "TypeScript", "C#", "HTML", "CSS"]}
-        />
-        <SkillGroup
-          title="Frameworks & Libraries"
-          skills={["React", "Django", "FastAPI", "Flask", "REST APIs", "scikit-learn"]}
-        />
-        <SkillGroup
-          title="Tools & Technologies"
-          skills={["AWS", "Docker", "Docker Compose", "dbt", "DuckDB", "Git", "GitHub", "GitHub Actions", "Prometheus", "Grafana", "Trivy", "WebSockets", "Figma", "Postman", "Microsoft Excel", "Microsoft Teams"]}
-        />
-      </div>
-    </section>
-  </div>
+<BaseLayout title="Experience" description="Emmanuel Idoro’s experience at RBC, Mindrift AI, and Outlier AI, plus Software Engineering education at the University of Calgary." activeItemID="experience">
+  <header class="page-heading"><p class="eyebrow">The work behind the portfolio</p><h1>Experience<span class="text-primary">.</span></h1><p>Enterprise data, AI model evaluation, and a foundation in software engineering.</p><a class="section-link" href={RESUME_URL} download={RESUME_FILENAME}>Download resume ↓</a></header>
+  <section aria-labelledby="work-title"><h2 id="work-title" class="text-2xl font-bold mb-8">Professional experience</h2><div class="experience-list">
+    {EXPERIENCE.map(job => <article id={job.id} class:list={['experience-entry', { 'experience-featured': job.id === 'rbc' }]}>
+      <div class="experience-meta"><p>{job.dates}</p><p>{job.location}</p>{job.note && <span class="text-primary text-sm mt-3 block">{job.note}</span>}</div>
+      <div><h3 class="text-xl font-bold">{job.role}</h3><p class="text-lg text-base-content/75 mt-1 mb-5">{job.company}</p><ul class="list-disc pl-5 space-y-3 text-base-content/80 leading-relaxed">{job.bullets.map(bullet => <li>{bullet}</li>)}</ul><ul class="flex flex-wrap gap-2 mt-5">{job.technologies.map(tech => <li class="skill-chip">{tech}</li>)}</ul></div>
+    </article>)}
+  </div></section>
+  <section class="section-block" aria-labelledby="education-title"><p class="eyebrow">Education</p><h2 id="education-title" class="text-2xl font-bold">{EDUCATION.degree}</h2><p class="mt-3 text-lg">{EDUCATION.university} · {EDUCATION.school}</p><p class="text-base-content/70 mt-1">{EDUCATION.dates} · Expected graduation: {EDUCATION.graduation}</p><h3 class="font-semibold mt-6 mb-3">Relevant coursework</h3><ul class="flex flex-wrap gap-2">{EDUCATION.coursework.map(course => <li class="skill-chip">{course}</li>)}</ul><a href="/references" class="section-link inline-block mt-6">Academic reference ↗</a></section>
+  <section class="section-block" aria-labelledby="skills-title"><h2 id="skills-title" class="text-2xl font-bold mb-6">Technical skills</h2><div class="space-y-6">{SKILLS.map(category => <div class="skill-row"><h3>{category.label}</h3><ul class="flex flex-wrap gap-2">{category.items.map(skill => <li class="skill-chip">{skill}</li>)}</ul></div>)}</div></section>
 </BaseLayout>

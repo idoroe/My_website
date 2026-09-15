@@ -1,78 +1,62 @@
 ---
-title: "Building a Bank-Grade Anomaly Detection Pipeline from Scratch"
-description: "How I used dbt, DuckDB, and Isolation Forest to build FinSight — an end-to-end data pipeline that catches suspicious transactions and explains why they're flagged."
+title: "Building an Explainable Anomaly Detection Pipeline from Scratch"
+description: "The design decisions behind FinSight: a dbt dimensional model, data quality checks, and readable context for anomaly scores across 50,000 synthetic transactions."
 pubDate: "Feb 08 2026"
+updatedDate: "2026-09-15"
 heroImage: "/screenshots/finsight-hero.webp"
 tags: ["data-engineering", "machine-learning", "dbt", "python"]
 ---
 
-I had a problem. I'd just landed a data engineering internship at RBC Borealis, and I was going to be working on the Enterprise Data Hub team — building and maintaining pipelines that move real financial data through a major bank's infrastructure. The thing is, I'd never actually built a data pipeline from scratch. Not a real one.
+FinSight started with a question: what has to happen between a raw transaction record and a useful anomaly alert?
 
-I'd taken database courses. I understood SQL. I knew what a star schema was in theory. But theory doesn't prepare you for the decisions you have to make when you're staring at raw CSV data and need to turn it into something a machine learning model can actually learn from.
+I built the project around 50,000 synthetic banking transactions so I could work through that whole path. Python generates the data, dbt transforms it in DuckDB, an Isolation Forest scores it, and FastAPI serves the results to a React dashboard. Each stage has to preserve enough context for the next one to make sense.
 
-So I built FinSight.
+## Choosing a Dimensional Model
 
-## Why a Star Schema Instead of Flat Tables
+A single wide table would have been a reasonable starting point for a small experiment. I chose a star schema to practice separating transaction events from the attributes used to describe them.
 
-My first instinct was to just throw everything into one big table. Customer info, transaction details, timestamps, merchant data — flatten it all and let the ML model figure it out. It would've been faster to set up.
+`fact_transactions` sits at the center, with `dim_customer`, `dim_merchant`, and `dim_time` supplying customer, merchant, and time context. That gives the application a consistent vocabulary for both analytics and feature preparation.
 
-But that's not how real data warehouses work. At scale, you need structure. You need to be able to ask "show me all transactions for high-risk customers on weekends" without scanning every row in a 50-million-record table.
+The benefit in this project is clarity. I can trace a dashboard field back to a transformation and then to its source. A star schema does not automatically make every query faster; the queries, storage engine, and actual execution plans still matter.
 
-I went with a classic star schema: `fact_transactions` in the center, surrounded by `dim_customer`, `dim_merchant`, and `dim_time`. Each dimension table has derived fields that don't exist in the raw data — customer risk tiers (based on historical averages), merchant categories, and time features like `is_weekend` and `is_business_hours`.
+## Making Transformations Inspectable
 
-This decision shaped everything that came after. The ML model doesn't just see raw amounts — it sees z-scores relative to each customer's normal behavior. That only works because the dimensional model pre-computes those baselines.
+I organized the dbt project into three layers:
 
-## Why dbt Matters
+- **Staging:** Clean records and establish consistent field types.
+- **Intermediate:** Join related data and calculate derived features.
+- **Marts:** Publish the tables used by analytics and the model.
 
-I could've written all my transformations in raw SQL scripts. But I wanted to understand dbt because that's what real data teams use, and honestly, once you use it, you get why.
-
-The magic of dbt is the layered pipeline. My transformations run in three stages:
-
-- **Staging:** Clean the raw CSV. Cast types, rename columns, filter garbage.
-- **Intermediate:** Enrich and join. Calculate customer averages, merchant stats, time features.
-- **Marts:** Final tables ready for analytics and ML. Star schema complete.
-
-Each layer has tests. If a column has unexpected nulls, the pipeline fails before bad data reaches the model. That's not a nice-to-have — in financial data, one bad join can turn a legitimate $50 grocery purchase into a flagged anomaly.
+Data quality tests make assumptions about those tables explicit. For example, this illustrative singular test identifies transactions with a missing customer key:
 
 ```sql
--- Example dbt test: every transaction must have a valid customer
-SELECT transaction_id
-FROM {{ ref('fact_transactions') }}
-WHERE customer_key IS NULL
+select transaction_id
+from {{ ref('fact_transactions') }}
+where customer_key is null
 ```
 
-If this returns rows, the pipeline stops. No silent failures.
+A dbt test fails when it returns rows at error severity. Running `dbt build` can then skip dependent downstream resources after a test failure, according to the dependency graph and test configuration. This is a useful foundation for a quality gate; the surrounding pipeline also needs to respect the command's exit status. [dbt's build documentation](https://docs.getdbt.com/reference/commands/build) explains that behavior.
 
-## The Explainability Breakthrough
+## Giving Scores Useful Context
 
-Here's where most anomaly detection projects stop: they train a model, it outputs a score, and they call it done. But a score of -0.73 means nothing to a fraud analyst. They need to know *why* this transaction is suspicious.
+An anomaly score is a starting point for investigation. The dashboard also needs to show what is unusual about the transaction.
 
-Each flagged transaction in FinSight gets a "top 3 reasons" breakdown. Not generic labels — specific, contextual explanations:
+FinSight presents explanations ranked by severity, using transaction features and customer context. A reviewer might see that an amount is much larger than the customer's baseline, that the timing is unusual, or that an activity pattern is unfamiliar.
 
-- "This transaction ($4,892) is 7.2x above this customer's average of $679"
-- "Transaction occurred at 2:47 AM; this customer typically transacts between 9 AM and 6 PM"
-- "First international transaction — no prior cross-border history"
+Those feature comparisons help someone inspect the record. They should not be read as proof of fraud or as a formal explanation of exactly how the Isolation Forest reached its score. Keeping that distinction clear makes the interface more useful and the claim more accurate.
 
-The implementation is straightforward once you have the dimensional model. For each flagged transaction, I compare its features against the customer's historical baseline from `dim_customer`. The deviations get ranked by magnitude, and the top 3 become the explanation.
+## Connecting the Whole Workflow
 
-This is the feature that makes FinSight more than a toy project. It's the difference between "the model says this is bad" and "here's specifically what's unusual about this transaction, in plain English."
+The project includes the system around the model: transformations, quality tests, a serving API, a dashboard, and Docker Compose packaging. On first boot, a single-command startup runs data generation, transformations, model training, and scoring.
 
-## What I Struggled With
+That repeatable setup makes it easier to inspect the complete path through the application. It also exposes the boundaries between stages: a problem in a join can become a problem in a model feature, which can become a confusing explanation in the interface.
 
-The hardest part wasn't the ML model — Isolation Forest is well-documented and relatively straightforward. The hard part was designing the data model.
+## What I Would Evaluate Next
 
-I spent two days going back and forth on whether `dim_time` should be its own table or just inline columns on the fact table. I went with a separate dimension because it let me pre-compute time-based features (day of week, hour bucket, is_holiday) once instead of recalculating them in every query.
+The current pipeline is a batch workflow using synthetic data. My next priorities would be to evaluate detection against known synthetic anomalies, test that historical features use only information available at the time of each transaction, and measure behavior as the dataset grows.
 
-The other challenge was synthetic data generation. I needed transactions that were realistic enough to have patterns — customers with normal spending habits, occasional large purchases, a few genuinely suspicious ones. I ended up writing a Python generator that creates customer profiles with specific spending distributions, then samples transactions from those distributions.
+Streaming ingestion and model drift monitoring are useful future extensions. The first step is to understand the current pipeline's quality and limits well enough to know what those additions should improve.
 
-## What I'd Do Differently
+Building FinSight reinforced the connection between data modeling and usable machine learning: every result is easier to assess when the path that produced it is visible.
 
-If I rebuilt this today, I'd add streaming. The current pipeline is batch — it processes all transactions at once. A real banking system needs to flag suspicious transactions in near-real-time. Kafka for ingestion, with the model scoring transactions as they arrive, would be the natural next step.
-
-I'd also explore SHAP values for deeper explainability. My current approach works well for simple deviations, but SHAP would let me explain interactions between features — like "this transaction is flagged because the combination of high amount AND unusual time is rare for this customer."
-
----
-
-FinSight is the project I'm most proud of — not because it's the most technically complex, but because it forced me to think like a data engineer before I'd ever been one. Every decision I made here (star schema, dbt layers, explainability) came from trying to understand how production systems actually work.
-
-Check out the [full case study](/projects/finsight) or browse the [GitHub repo](https://github.com/idoroe/Finsight-Lite).
+Explore the [FinSight case study](/projects/finsight) or the [source code on GitHub](https://github.com/idoroe/Finsight-Lite).

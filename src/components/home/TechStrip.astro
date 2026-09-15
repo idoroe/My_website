@@ -1,32 +1,9 @@
 ---
-const techCategories = [
-  {
-    label: "Languages",
-    items: ["Python", "Java", "SQL", "C", "C++", "JavaScript", "TypeScript", "C#", "HTML", "CSS"],
-  },
-  {
-    label: "Frameworks & Libraries",
-    items: ["React", "Django", "FastAPI", "Flask", "REST APIs", "scikit-learn"],
-  },
-  {
-    label: "Tools & Technologies",
-    items: ["AWS", "Docker", "Docker Compose", "dbt", "DuckDB", "Git", "GitHub", "GitHub Actions", "Prometheus", "Grafana", "Trivy", "WebSockets", "Figma", "Postman", "Microsoft Excel", "Microsoft Teams"],
-  },
-];
+import { SKILLS } from "../../data/profile";
 ---
-
-<section class="py-12 animate-on-scroll">
-  <h2 class="text-2xl font-bold mb-6">Tech Stack</h2>
-  <div class="space-y-4">
-    {techCategories.map((cat, i) => (
-      <div class="animate-slide-left" style={`animation-delay: ${i * 0.08}s;`}>
-        <span class="text-sm font-medium text-base-content/50 uppercase tracking-wider">{cat.label}</span>
-        <div class="flex flex-wrap gap-2 mt-2">
-          {cat.items.map((tech) => (
-            <span class="badge badge-lg bg-base-200 border-base-300 text-base-content/80 hover:border-primary/40 transition-colors">{tech}</span>
-          ))}
-        </div>
-      </div>
-    ))}
-  </div>
+<section class="section-block" aria-labelledby="skills-title">
+  <div class="section-heading"><div><p class="eyebrow">Tools I work with</p><h2 id="skills-title">From data to delivery.</h2></div></div>
+  <div class="space-y-6">{SKILLS.map(category => (
+    <div class="skill-row"><h3>{category.label}</h3><ul class="flex flex-wrap gap-2">{category.items.map(skill => <li class="skill-chip">{skill}</li>)}</ul></div>
+  ))}</div>
 </section>
