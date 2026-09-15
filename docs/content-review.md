@@ -52,7 +52,7 @@ The user supplied the relationship: Ronnie taught Emmanuel Software Architecture
 - Position: **Assistant Professor**.
 - Affiliation: **Department of Electrical and Software Engineering, Schulich School of Engineering, University of Calgary**.
 - Course: **SENG 401, Software Architecture**, listed for Winter 2024 and Winter 2025. The website does not assert which term Emmanuel attended.
-- LinkedIn profile: [ronnie-santos](https://www.linkedin.com/in/ronnie-santos/), linked by the faculty profile.
+- LinkedIn profile: [drdesouzasantos](https://www.linkedin.com/in/drdesouzasantos/), confirmed by the current indexed LinkedIn profile and recent posts. The university directory's older LinkedIn URL was reported broken and replaced.
 
 The reference page describes the relationship and offers a request for an introduction through Emmanuel. It contains no invented recommendation, quotation, or assessment of Emmanuel's performance.
 
@@ -79,6 +79,6 @@ Completed against the production build on September 15, 2026:
 - Verified copy-email feedback and clipboard contents. No email or reference request was sent.
 - Verified navigation and all architecture guides remain available without JavaScript.
 - Reviewed desktop/mobile screenshots, social preview artwork, and the existing project image set. Gallery images with distracting dummy text were omitted.
-- Three project repositories returned HTTP 200 and are public. LinkedIn blocks automated fetches; the reference profile URL is corroborated by the university directory.
+- Three project repositories returned HTTP 200 and are public. LinkedIn blocks automated fetches; Ronnie's current profile identifier was checked against indexed LinkedIn results and recent posts after the university directory's older link was reported broken.
 
 The supplied resume is the basis for career claims. Existing project metrics were not re-benchmarked as part of website validation.
